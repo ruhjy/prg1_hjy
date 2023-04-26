@@ -89,7 +89,6 @@ public class BoardController {
 	public String remove(@RequestParam Integer id, RedirectAttributes redirectAttributes) {
 		boolean ok = service.remove(id);
 
-		
 		if (ok) {
 			redirectAttributes.addAttribute("id", id);
 			redirectAttributes.addAttribute("success", "remove");
@@ -99,5 +98,4 @@ public class BoardController {
 		}
 	}
 	
-
 }

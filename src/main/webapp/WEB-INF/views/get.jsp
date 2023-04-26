@@ -42,7 +42,7 @@
 	
 	<script>
     	$("#removeButton").click(function(e) {
-    		// 서브밋 진행 이벤트 막기
+    		// 서브밋 진행 이벤트 막기 (없으면 아니오 눌러도 삭제됨.)
     		e.preventDefault();
     		
     		const res = confirm("삭제 하시겠습니까?");
