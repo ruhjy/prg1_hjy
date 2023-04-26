@@ -67,6 +67,7 @@ public class BoardController {
 	}
 
 	// 수정
+//	@RequestMapping(value = "/modify/{id}", method = RequestMethod.POST)
 	@PostMapping("/modify/{id}")
 	public String modifyProcess(@ModelAttribute Board board, RedirectAttributes redirectAttributes) {
 		boolean ok = service.modify(board);
@@ -85,6 +86,7 @@ public class BoardController {
 	}
 
 	// 삭제
+//	@RequestMapping(value = "/remove", method = RequestMethod.POST)
 	@PostMapping("/remove")
 	public String remove(@RequestParam Integer id, RedirectAttributes redirectAttributes) {
 		boolean ok = service.remove(id);
