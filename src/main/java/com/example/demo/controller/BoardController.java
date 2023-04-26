@@ -100,4 +100,16 @@ public class BoardController {
 		}
 	}
 	
+	// 추가 폼
+	@GetMapping("/add")
+	public String addForm() {
+		return "";
+	}
+	
+	// 추가
+	@PostMapping("/add")
+	public String addProcess() {
+		return "";
+	}
+	
 }
