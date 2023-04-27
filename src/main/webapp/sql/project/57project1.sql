@@ -21,3 +21,10 @@ values
 	('샘플 제목2', '샘플 본문2', 'user02'),
 	('샘플 제목3', '샘플 본문3', 'user11'),
 	('샘플 제목4', '샘플 본문4', 'user15');
+    
+    
+    
+create table Member(
+	id int primary key auto_increment,
+    member_name varchar(50),
+    member_age int);

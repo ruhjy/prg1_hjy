@@ -75,12 +75,17 @@ public class BoardController {
 		if (ok) {
 			// 해당 게시물 보기로 리디렉션
 			redirectAttributes.addAttribute("id", board.getId());
-			redirectAttributes.addAttribute("success", "success");
+			// query string에 추가
+//			redirectAttributes.addAttribute("success", "success");
+			
+			// 메세지 모델에 추가
+			redirectAttributes.addFlashAttribute("message", board.getId() + "번 글이 수정되었습니다.");
 //			return "redirect:/id/" + board.getId();
 			return "redirect:/id/{id}";
 		} else {
 			// 수정 form 으로 리디렉션
 			redirectAttributes.addAttribute("fail", "fail");
+			redirectAttributes.addFlashAttribute("message", board.getId() + "번 글 수정 중에 문제 발생@");
 			return "redirect:/modify/{id}";
 		}
 	}
@@ -93,9 +98,14 @@ public class BoardController {
 
 		if (ok) {
 			redirectAttributes.addAttribute("id", id);
-			redirectAttributes.addAttribute("success", "remove");
+			// query string에 추가
+//			redirectAttributes.addAttribute("success", "remove");
+			
+			// 메세지 모델에 추가
+			redirectAttributes.addFlashAttribute("message", id + "번 글이 삭제되었습니다.");
 			return "redirect:/list";
 		} else {
+			redirectAttributes.addFlashAttribute("message", id + "번 글 삭제 중 문제 발생!");
 			return "redirect:/id/{id}";
 		}
 	}
@@ -114,13 +124,16 @@ public class BoardController {
 		// 새 게시물 db에 추가
 		// 2.
 		boolean ok = service.addBoard(board);
-		
 		// 3.
 		// 4.
 		if(ok) {
+			// 메세지 모델에 추가
+			redirectAttributes.addFlashAttribute("message", board.getId() + "번 글이 등록되었습니다.");
+			
 			return "redirect:/id/" + board.getId();
 		} else {
 			redirectAttributes.addFlashAttribute("board", board);
+			redirectAttributes.addFlashAttribute("message", "글 등록 중 문제가 발생하였습니다.");
 			return "redirect:/add";
 		}
 		
