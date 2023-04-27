@@ -24,4 +24,8 @@ public interface BoardMapper {
 
 	@Delete("delete from Board where id = #{id}")
 	int deleteById(Integer id);
+	
+	@Insert("insert into Board (title, body, writer) values (#{title}, #{body}, #{writer})")
+	@Options(useGeneratedKeys = true, keyProperty = "id")
+	int insert(Board board);
 }

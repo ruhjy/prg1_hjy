@@ -102,14 +102,28 @@ public class BoardController {
 	
 	// 추가 폼
 	@GetMapping("/add")
-	public String addForm() {
-		return "";
+	public String addForm(@ModelAttribute Board board) {
+		// 반환 타입 void로 할 경우 return 생략 가능
+		// 게시물 작성 form (view)로 포워드
+		return "add";
 	}
 	
 	// 추가
 	@PostMapping("/add")
-	public String addProcess() {
-		return "";
+	public String addProcess(@ModelAttribute Board board, RedirectAttributes redirectAttributes) {
+		// 새 게시물 db에 추가
+		// 2.
+		boolean ok = service.addBoard(board);
+		
+		// 3.
+		// 4.
+		if(ok) {
+			return "redirect:/id/" + board.getId();
+		} else {
+			redirectAttributes.addFlashAttribute("board", board);
+			return "redirect:/add";
+		}
+		
 	}
 	
 }
