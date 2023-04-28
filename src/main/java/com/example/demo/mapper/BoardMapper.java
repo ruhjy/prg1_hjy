@@ -28,4 +28,11 @@ public interface BoardMapper {
 	@Insert("insert into Board (title, body, writer) values (#{title}, #{body}, #{writer})")
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	int insert(Board board);
+
+	@Select("select id, title, writer, inserted from Board "
+			+ "order by id desc limit #{startIndex}, #{rowPerPage}")
+	List<Board> selectAllPaging(Integer startIndex, Integer rowPerPage);
+	
+	@Select("select count(*) from Board")
+	Integer countAll();
 }

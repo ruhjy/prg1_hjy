@@ -21,18 +21,42 @@ public class BoardController {
 	@Autowired
 	private BoardService service;
 
-	// 경로 : http://localhost:8080
-	// 경로 : http://localhost:8080/list
+	/*
+	 * // 경로 : http://localhost:8080
+	 * // 경로 : http://localhost:8080/list
+	 * // 게시물 목록
+	 * // @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
+	 * 
+	 * @GetMapping(value = { "/", "/list" })
+	 * public String list(Model model) {
+	 * // 1. request param 수집/가공
+	 * // 2. business logic 처리
+	 * List<Board> list = service.listBoard();
+	 * 
+	 * // 3. add attribute
+	 * model.addAttribute("boardList", list);
+	 * 
+	 * // 4. forward / redirect
+	 * return "list";
+	 * }
+	 */
+
+	// pagination 적용
+	// 경로 : http://localhost:8080?page=3
+	// 경로 : http://localhost:8080/list?page=3
 	// 게시물 목록
-//	@RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
 	@GetMapping(value = { "/", "/list" })
-	public String list(Model model) {
+	public String list(Model model,
+			@RequestParam(value = "page", defaultValue = "1") Integer page) {
 		// 1. request param 수집/가공
 		// 2. business logic 처리
-		List<Board> list = service.listBoard();
+		Map<String, Object> result = service.listBoard(page);
 
 		// 3. add attribute
-		model.addAttribute("boardList", list);
+//		model.addAttribute("boardList", result.get("boardList"));
+//		model.addAttribute("pageInfo", result.get("pageInfo"));
+		// 서비스에 받은 정보 한번에 담기
+		model.addAllAttributes(result);
 
 		// 4. forward / redirect
 		return "list";
@@ -77,7 +101,7 @@ public class BoardController {
 			redirectAttributes.addAttribute("id", board.getId());
 			// query string에 추가
 //			redirectAttributes.addAttribute("success", "success");
-			
+
 			// 메세지 모델에 추가
 			redirectAttributes.addFlashAttribute("message", board.getId() + "번 글이 수정되었습니다.");
 //			return "redirect:/id/" + board.getId();
@@ -100,7 +124,7 @@ public class BoardController {
 			redirectAttributes.addAttribute("id", id);
 			// query string에 추가
 //			redirectAttributes.addAttribute("success", "remove");
-			
+
 			// 메세지 모델에 추가
 			redirectAttributes.addFlashAttribute("message", id + "번 글이 삭제되었습니다.");
 			return "redirect:/list";
@@ -109,7 +133,7 @@ public class BoardController {
 			return "redirect:/id/{id}";
 		}
 	}
-	
+
 	// 추가 폼
 	@GetMapping("/add")
 	public String addForm(@ModelAttribute Board board) {
@@ -117,7 +141,7 @@ public class BoardController {
 		// 게시물 작성 form (view)로 포워드
 		return "add";
 	}
-	
+
 	// 추가
 	@PostMapping("/add")
 	public String addProcess(@ModelAttribute Board board, RedirectAttributes redirectAttributes) {
@@ -126,17 +150,16 @@ public class BoardController {
 		boolean ok = service.addBoard(board);
 		// 3.
 		// 4.
-		if(ok) {
+		if (ok) {
 			// 메세지 모델에 추가
 			redirectAttributes.addFlashAttribute("message", board.getId() + "번 글이 등록되었습니다.");
-			
+
 			return "redirect:/id/" + board.getId();
 		} else {
 			redirectAttributes.addFlashAttribute("board", board);
 			redirectAttributes.addFlashAttribute("message", "글 등록 중 문제가 발생하였습니다.");
 			return "redirect:/add";
 		}
-		
 	}
-	
+
 }
