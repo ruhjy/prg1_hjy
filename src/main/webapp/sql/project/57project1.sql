@@ -14,6 +14,7 @@ create table Board (
 
 desc Board;
 select * from Board order by id desc;
+select count(*) from Board;
 
 insert into Board (title, body, writer)
 values 
@@ -22,7 +23,12 @@ values
 	('샘플 제목3', '샘플 본문3', 'user11'),
 	('샘플 제목4', '샘플 본문4', 'user15');
     
-    
+insert into Board (title, body, writer)
+values 
+	('안녕001', '샘플 본문1', '익명01'),
+	('안녕002', '샘플 본문2', '익명02'),
+	('안녕003', '샘플 본문3', '익명11'),
+	('안녕004', '샘플 본문4', '익명15');
     
 create table Member(
 	id int primary key auto_increment,
