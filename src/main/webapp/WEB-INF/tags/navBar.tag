@@ -23,17 +23,20 @@
 			</ul>
 
 			<form class="d-flex" action="/list" role="search">
-				<select name="type" id="">
-					<option value="all">전체</option>
-					<option value="title" ${param.type eq 'title' ? 'selected' : '' }>제목</option>
-					<option value="body" ${param.type eq 'body' ? 'selected' : '' }>본문</option>
-					<option value="writer" ${param.type eq 'writer' ? 'selected' : '' }>작성자</option>
-				</select>
 
-				<input name="search" value="${param.search }" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-				<button class="btn btn-outline-success" type="submit">
-					<i class="fa-brands fa-searchengin" style="color: #4cb62f;"></i>
-				</button>
+				<div class="input-group">
+					<select class="form-select flex-grow-0" style="width: 100px;" name="type" id="">
+						<option value="all">전체</option>
+						<option value="title" ${param.type eq 'title' ? 'selected' : '' }>제목</option>
+						<option value="body" ${param.type eq 'body' ? 'selected' : '' }>본문</option>
+						<option value="writer" ${param.type eq 'writer' ? 'selected' : '' }>작성자</option>
+					</select>
+
+					<input name="search" value="${param.search }" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+					<button class="btn btn-outline-success" type="submit">
+						<i class="fa-brands fa-searchengin" style="color: #4cb62f;"></i>
+					</button>
+				</div>
 			</form>
 		</div>
 	</div>

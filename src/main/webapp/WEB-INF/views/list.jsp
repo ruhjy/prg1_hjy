@@ -20,7 +20,12 @@
 		<c:url value="/list" var="pageLink">
 			<c:param name="page" value="${pageInfo['currentPageNum'] }"></c:param>
 		</c:url>
+
+		<%-- 		<c:if test="${not empty param.search }">
+			<c:param name="search" value="${param.search }" />
+		</c:if> --%>
 		<form action="${pageLink }">
+
 			<select name="maxPageSize">
 				<option value="10" ${param.maxPageSize eq 10 ? 'selected' : '' }>10개씩 보기</option>
 				<option value="15" ${param.maxPageSize eq 15 ? 'selected' : '' }>15개씩 보기</option>
@@ -31,6 +36,7 @@
 			<input type="text" value="${param.search }" />
 			<input type="submit" value="보기" />
 		</form>
+
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -62,103 +68,40 @@
 				<ul class="pagination justify-content-center">
 
 					<!-- 맨앞 버튼 -->
-					<c:url value="/list" var="pageLink">
-						<c:param name="page" value="1"></c:param>
-						<c:if test="${not empty param.search}">
-							<c:param name="search" value="${param.search }"></c:param>
-						</c:if>
-						<c:if test="${not empty param.maxPageSize}">
-							<c:param name="maxPageSize" value="${param.maxPageSize }"></c:param>
-						</c:if>
-						<c:if test="${not empty param.type }">
-							<c:param name="type" value="${param.type }"></c:param>
-						</c:if>
-					</c:url>
-					<li class="page-item">
-						<a class="page-link" href="${pageLink}">
-							<i class="fa-solid fa-angles-left"></i>
-						</a>
-					</li>
+					<!-- 페이지 번호 : 1 -->
+					<my:pageItem pageNum="1">
+						<i class="fa-solid fa-angles-left"></i>
+					</my:pageItem>
 
 					<!-- 이전 버튼 -->
 					<c:if test="${pageInfo['currentPageNum'] gt 1 }">
-						<c:url value="/list" var="pageLink">
-							<c:param name="page" value="${pageInfo['currentPageNum'] - 1}"></c:param>
-							<c:if test="${not empty param.search }">
-								<c:param name="search" value="${param.search }"></c:param>
-							</c:if>
-							<c:if test="${not empty param.maxPageSize }">
-								<c:param name="maxPageSize" value="${param.maxPageSize }"></c:param>
-							</c:if>
-							<c:if test="${not empty param.type }">
-								<c:param name="type" value="${param.type }"></c:param>
-							</c:if>
-						</c:url>
-						<li class="page-item">
-							<a class="page-link" href="${pageLink}">
-								<i class="fa-solid fa-chevron-left"></i>
-							</a>
-						</li>
+						<!-- 페이지 번호 : ${pageInfo['currentPageNum'] - 1} -->
+						<my:pageItem pageNum="${pageInfo['currentPageNum'] - 1 }">
+							<i class="fa-solid fa-chevron-left"></i>
+						</my:pageItem>
 					</c:if>
 
 					<!-- 페이지 -->
 					<c:forEach begin="${pageInfo['leftPageNum']}" end="${pageInfo['rightPageNum'] }" var="pageNum">
-						<c:url value="/list" var="pageLink">
-							<c:param name="page" value="${pageNum }"></c:param>
-							<c:if test="${not empty param.search}">
-								<c:param name="search" value="${param.search }"></c:param>
-							</c:if>
-							<c:if test="${not empty param.maxPageSize}">
-								<c:param name="maxPageSize" value="${param.maxPageSize }"></c:param>
-							</c:if>
-							<c:if test="${not empty param.type }">
-								<c:param name="type" value="${param.type }"></c:param>
-							</c:if>
-						</c:url>
-						<li class="page-item">
-							<a class="page-link ${pageNum eq pageInfo['currentPageNum'] ? 'active' : ''}" href="${pageLink }">${pageNum }</a>
-						</li>
+						<my:pageItem pageNum="${pageNum }">
+							${pageNum }
+						</my:pageItem>
 					</c:forEach>
 
 					<!-- 다음 버튼 -->
 					<c:if test="${pageInfo['currentPageNum'] lt pageInfo['lastPageNum']}">
-						<c:url value="/list" var="pageLink">
-							<c:param name="page" value="${pageInfo['currentPageNum'] + 1}"></c:param>
-							<c:if test="${not empty param.search }">
-								<c:param name="search" value="${param.search }"></c:param>
-							</c:if>
-							<c:if test="${not empty param.maxPageSize }">
-								<c:param name="maxPageSize" value="${param.maxPageSize }"></c:param>
-							</c:if>
-							<c:if test="${not empty param.type }">
-								<c:param name="type" value="${param.type }"></c:param>
-							</c:if>
-						</c:url>
-						<li class="page-item">
-							<a class="page-link" href="${pageLink}">
-								<i class="fa-solid fa-chevron-right"></i>
-							</a>
-						</li>
+						<!-- 페이지 번호 : ${pageInfo['currentPageNum'] + 1} -->
+						<my:pageItem pageNum="${pageInfo['currentPageNum'] + 1 }">
+							<i class="fa-solid fa-chevron-right"></i>
+						</my:pageItem>
 					</c:if>
 
 					<!-- 맨뒤 버튼 -->
-					<c:url value="/list" var="pageLink">
-						<c:param name="page" value="${pageInfo['lastPageNum'] }"></c:param>
-						<c:if test="${not empty param.search }">
-							<c:param name="search" value="${param.search }"></c:param>
-						</c:if>
-						<c:if test="${not empty param.maxPageSize }">
-							<c:param name="maxPageSize" value="${param.maxPageSize }"></c:param>
-						</c:if>
-						<c:if test="${not empty param.type }">
-							<c:param name="type" value="${param.type }"></c:param>
-						</c:if>
-					</c:url>
-					<li class="page-item">
-						<a class="page-link" href="${pageLink}">
-							<i class="fa-solid fa-angles-right"></i>
-						</a>
-					</li>
+					<!-- 페이지 번호 : ${pageInfo['lastPageNum'] } -->
+					<my:pageItem pageNum="${pageInfo['lastPageNum'] }">
+						<i class="fa-solid fa-angles-right"></i>
+					</my:pageItem>
+
 				</ul>
 			</nav>
 		</div>
