@@ -16,6 +16,21 @@
 	<my:alert />
 	<div class="container-lg">
 		<h1>게시물 목록</h1>
+		게시물 수 : ${pageInfo['numOfRecords']}
+		<c:url value="/list" var="pageLink">
+			<c:param name="page" value="${pageInfo['currentPageNum'] }"></c:param>
+		</c:url>
+		<form action="${pageLink }">
+			<select name="maxPageSize">
+				<option value="10" ${param.maxPageSize eq 10 ? 'selected' : '' }>10개씩 보기</option>
+				<option value="15" ${param.maxPageSize eq 15 ? 'selected' : '' }>15개씩 보기</option>
+				<option value="20" ${param.maxPageSize eq 20 ? 'selected' : '' }>20개씩 보기</option>
+				<option value="30" ${param.maxPageSize eq 30 ? 'selected' : '' }>30개씩 보기</option>
+			</select>
+			<input type="text" value="${param.maxPageSize }" />
+			<input type="text" value="${param.search }" />
+			<input type="submit" value="보기" />
+		</form>
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -49,6 +64,15 @@
 					<!-- 맨앞 버튼 -->
 					<c:url value="/list" var="pageLink">
 						<c:param name="page" value="1"></c:param>
+						<c:if test="${not empty param.search}">
+							<c:param name="search" value="${param.search }"></c:param>
+						</c:if>
+						<c:if test="${not empty param.maxPageSize}">
+							<c:param name="maxPageSize" value="${param.maxPageSize }"></c:param>
+						</c:if>
+						<c:if test="${not empty param.type }">
+							<c:param name="type" value="${param.type }"></c:param>
+						</c:if>
 					</c:url>
 					<li class="page-item">
 						<a class="page-link" href="${pageLink}">
@@ -60,6 +84,15 @@
 					<c:if test="${pageInfo['currentPageNum'] gt 1 }">
 						<c:url value="/list" var="pageLink">
 							<c:param name="page" value="${pageInfo['currentPageNum'] - 1}"></c:param>
+							<c:if test="${not empty param.search }">
+								<c:param name="search" value="${param.search }"></c:param>
+							</c:if>
+							<c:if test="${not empty param.maxPageSize }">
+								<c:param name="maxPageSize" value="${param.maxPageSize }"></c:param>
+							</c:if>
+							<c:if test="${not empty param.type }">
+								<c:param name="type" value="${param.type }"></c:param>
+							</c:if>
 						</c:url>
 						<li class="page-item">
 							<a class="page-link" href="${pageLink}">
@@ -72,6 +105,15 @@
 					<c:forEach begin="${pageInfo['leftPageNum']}" end="${pageInfo['rightPageNum'] }" var="pageNum">
 						<c:url value="/list" var="pageLink">
 							<c:param name="page" value="${pageNum }"></c:param>
+							<c:if test="${not empty param.search}">
+								<c:param name="search" value="${param.search }"></c:param>
+							</c:if>
+							<c:if test="${not empty param.maxPageSize}">
+								<c:param name="maxPageSize" value="${param.maxPageSize }"></c:param>
+							</c:if>
+							<c:if test="${not empty param.type }">
+								<c:param name="type" value="${param.type }"></c:param>
+							</c:if>
 						</c:url>
 						<li class="page-item">
 							<a class="page-link ${pageNum eq pageInfo['currentPageNum'] ? 'active' : ''}" href="${pageLink }">${pageNum }</a>
@@ -82,6 +124,15 @@
 					<c:if test="${pageInfo['currentPageNum'] lt pageInfo['lastPageNum']}">
 						<c:url value="/list" var="pageLink">
 							<c:param name="page" value="${pageInfo['currentPageNum'] + 1}"></c:param>
+							<c:if test="${not empty param.search }">
+								<c:param name="search" value="${param.search }"></c:param>
+							</c:if>
+							<c:if test="${not empty param.maxPageSize }">
+								<c:param name="maxPageSize" value="${param.maxPageSize }"></c:param>
+							</c:if>
+							<c:if test="${not empty param.type }">
+								<c:param name="type" value="${param.type }"></c:param>
+							</c:if>
 						</c:url>
 						<li class="page-item">
 							<a class="page-link" href="${pageLink}">
@@ -93,6 +144,15 @@
 					<!-- 맨뒤 버튼 -->
 					<c:url value="/list" var="pageLink">
 						<c:param name="page" value="${pageInfo['lastPageNum'] }"></c:param>
+						<c:if test="${not empty param.search }">
+							<c:param name="search" value="${param.search }"></c:param>
+						</c:if>
+						<c:if test="${not empty param.maxPageSize }">
+							<c:param name="maxPageSize" value="${param.maxPageSize }"></c:param>
+						</c:if>
+						<c:if test="${not empty param.type }">
+							<c:param name="type" value="${param.type }"></c:param>
+						</c:if>
 					</c:url>
 					<li class="page-item">
 						<a class="page-link" href="${pageLink}">
@@ -107,5 +167,6 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </body>
 </html>

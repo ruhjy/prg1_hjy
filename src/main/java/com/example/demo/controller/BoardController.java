@@ -41,23 +41,51 @@ public class BoardController {
 	 * }
 	 */
 
+	/*
+	 * // pagination 적용
+	 * // 경로 : http://localhost:8080?page=3
+	 * // 경로 : http://localhost:8080/list?page=3
+	 * // 게시물 목록
+	 * 
+	 * @GetMapping(value = { "/", "/list" })
+	 * public String list(Model model,
+	 * 
+	 * @RequestParam(value = "page", defaultValue = "1") Integer page) {
+	 * // 1. request param 수집/가공
+	 * // 2. business logic 처리
+	 * Map<String, Object> result = service.listBoard(page);
+	 * 
+	 * // 3. add attribute
+	 * // model.addAttribute("boardList", result.get("boardList"));
+	 * // model.addAttribute("pageInfo", result.get("pageInfo"));
+	 * // 서비스에 받은 정보 한번에 담기
+	 * model.addAllAttributes(result);
+	 * 
+	 * // 4. forward / redirect
+	 * return "list";
+	 * }
+	 */
+
 	// pagination 적용
 	// 경로 : http://localhost:8080?page=3
 	// 경로 : http://localhost:8080/list?page=3
 	// 게시물 목록
 	@GetMapping(value = { "/", "/list" })
 	public String list(Model model,
-			@RequestParam(value = "page", defaultValue = "1") Integer page) {
+			@RequestParam(value = "page", defaultValue = "1") Integer page,
+			@RequestParam(value = "search", defaultValue = "") String search,
+			@RequestParam(value = "maxPageSize", defaultValue = "15") Integer pageSize,
+			@RequestParam(value = "type", required = false) String type) {
 		// 1. request param 수집/가공
 		// 2. business logic 처리
-		Map<String, Object> result = service.listBoard(page);
-
+		Map<String, Object> result = service.listBoard(page, search, type, pageSize);
+		
 		// 3. add attribute
 //		model.addAttribute("boardList", result.get("boardList"));
 //		model.addAttribute("pageInfo", result.get("pageInfo"));
 		// 서비스에 받은 정보 한번에 담기
 		model.addAllAttributes(result);
-
+		
 		// 4. forward / redirect
 		return "list";
 	}
