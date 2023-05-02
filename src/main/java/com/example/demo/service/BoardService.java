@@ -1,20 +1,27 @@
 package com.example.demo.service;
 
+import java.io.*;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
+import org.springframework.web.multipart.*;
 
 import com.example.demo.domain.*;
 import com.example.demo.mapper.*;
 
+import lombok.extern.slf4j.*;
+
+@Slf4j
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class BoardService {
 
-	private final BoardMapper mapper;
+	private final BoardMapper2 mapper;
 
 	@Autowired // 생성자 하나일 경우 생략 가능
-	public BoardService(BoardMapper mapper) {
+	public BoardService(BoardMapper2 mapper) {
 		this.mapper = mapper;
 	}
 
@@ -38,14 +45,45 @@ public class BoardService {
 		return cnt == 1;
 	}
 
-	public boolean addBoard(Board board) {
+	// 2. 트랜잭션 처리하기 - 클래스 레벨에 @Transactional 선언
+	public boolean addBoard(Board board, MultipartFile[] files) {
+		// 게시물 insert
 		int cnt = mapper.insert(board);
+		
+		for (MultipartFile file : files) {
+			if (file.getSize() > 0) {
+				// 파일 저장 (파일 시스템에)
+				String folder = "C:\\study\\upload\\" + board.getId();
+
+				// 1. 게시물번호 폴더 만들기
+				File targetFolder = new File(folder);
+				if (!targetFolder.exists()) {
+					targetFolder.mkdirs();
+				}
+
+				String path = folder + "\\" + file.getOriginalFilename();
+				log.info("path={}", path);
+			
+				File target = new File(path);
+				try {
+					file.transferTo(target);
+					
+				} catch (Exception e) {
+					log.error("file upload error= ", e);
+					throw new RuntimeException(e);
+				}
+				// db에 관련 정보 저장(insert)
+				mapper.insertFileName(board.getId(), file.getOriginalFilename());
+
+			}
+		}
+
 		return cnt == 1;
 	}
 
 	public Map<String, Object> listBoard(
 			Integer page, String search, String type, Integer pageSize) {
-		
+
 		// 페이지당 행의 수
 		Integer rowPerpage = 15;
 		if (pageSize != null) {
@@ -77,7 +115,7 @@ public class BoardService {
 		pageInfo.put("currentPageNum", page);
 		pageInfo.put("lastPageNum", lastPageNumber);
 		pageInfo.put("numOfRecords", numOfRecords);
-
+		
 		// 게시물 목록
 		List<Board> list = mapper.selectAllPaging(startIndex, rowPerpage, search, type);
 		return Map.of("pageInfo", pageInfo, "boardList", list);

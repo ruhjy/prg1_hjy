@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.*;
 import org.springframework.web.servlet.mvc.support.*;
 
 import com.example.demo.domain.*;
@@ -79,13 +80,13 @@ public class BoardController {
 		// 1. request param 수집/가공
 		// 2. business logic 처리
 		Map<String, Object> result = service.listBoard(page, search, type, pageSize);
-		
+
 		// 3. add attribute
 //		model.addAttribute("boardList", result.get("boardList"));
 //		model.addAttribute("pageInfo", result.get("pageInfo"));
 		// 서비스에 받은 정보 한번에 담기
 		model.addAllAttributes(result);
-		
+
 		// 4. forward / redirect
 		return "list";
 	}
@@ -172,10 +173,13 @@ public class BoardController {
 
 	// 추가
 	@PostMapping("/add")
-	public String addProcess(@ModelAttribute Board board, RedirectAttributes redirectAttributes) {
+	public String addProcess(
+			@RequestParam("files") MultipartFile[] files,
+			@ModelAttribute Board board,
+			RedirectAttributes redirectAttributes) {
 		// 새 게시물 db에 추가
 		// 2.
-		boolean ok = service.addBoard(board);
+		boolean ok = service.addBoard(board, files);
 		// 3.
 		// 4.
 		if (ok) {

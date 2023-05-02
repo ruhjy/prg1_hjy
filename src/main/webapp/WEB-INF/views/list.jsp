@@ -27,13 +27,12 @@
 		<form action="${pageLink }">
 
 			<select name="maxPageSize">
+				<option value="15">15개씩 보기</option>
+				<option value="5" ${param.maxPageSize eq 5 ? 'selected' : '' }>5개씩 보기</option>
 				<option value="10" ${param.maxPageSize eq 10 ? 'selected' : '' }>10개씩 보기</option>
-				<option value="15" ${param.maxPageSize eq 15 ? 'selected' : '' }>15개씩 보기</option>
 				<option value="20" ${param.maxPageSize eq 20 ? 'selected' : '' }>20개씩 보기</option>
 				<option value="30" ${param.maxPageSize eq 30 ? 'selected' : '' }>30개씩 보기</option>
 			</select>
-			<input type="text" value="${param.maxPageSize }" />
-			<input type="text" value="${param.search }" />
 			<input type="submit" value="보기" />
 		</form>
 
@@ -52,6 +51,12 @@
 						<td>${board.id }</td>
 						<td>
 							<a href="/id/${board.id }"> ${board.title } </a>
+							<c:if test="${board.fileCount > 0 }">
+								<span class="badge rounded-pill text-bg-info">
+									<i class="fa-regular fa-image"></i>
+									${board.fileCount }
+								</span>
+							</c:if>
 						</td>
 						<td>${board.writer }</td>
 						<td>${board.inserted }</td>
@@ -67,14 +72,14 @@
 
 				<ul class="pagination justify-content-center">
 
-					<!-- 맨앞 버튼 -->
-					<!-- 페이지 번호 : 1 -->
-					<my:pageItem pageNum="1">
-						<i class="fa-solid fa-angles-left"></i>
-					</my:pageItem>
 
-					<!-- 이전 버튼 -->
 					<c:if test="${pageInfo['currentPageNum'] gt 1 }">
+						<!-- 맨앞 버튼 -->
+						<!-- 페이지 번호 : 1 -->
+						<my:pageItem pageNum="1">
+							<i class="fa-solid fa-angles-left"></i>
+						</my:pageItem>
+						<!-- 이전 버튼 -->
 						<!-- 페이지 번호 : ${pageInfo['currentPageNum'] - 1} -->
 						<my:pageItem pageNum="${pageInfo['currentPageNum'] - 1 }">
 							<i class="fa-solid fa-chevron-left"></i>
@@ -88,19 +93,19 @@
 						</my:pageItem>
 					</c:forEach>
 
-					<!-- 다음 버튼 -->
 					<c:if test="${pageInfo['currentPageNum'] lt pageInfo['lastPageNum']}">
+						<!-- 다음 버튼 -->
 						<!-- 페이지 번호 : ${pageInfo['currentPageNum'] + 1} -->
 						<my:pageItem pageNum="${pageInfo['currentPageNum'] + 1 }">
 							<i class="fa-solid fa-chevron-right"></i>
 						</my:pageItem>
+						<!-- 맨뒤 버튼 -->
+						<!-- 페이지 번호 : ${pageInfo['lastPageNum'] } -->
+						<my:pageItem pageNum="${pageInfo['lastPageNum'] }">
+							<i class="fa-solid fa-angles-right"></i>
+						</my:pageItem>
 					</c:if>
 
-					<!-- 맨뒤 버튼 -->
-					<!-- 페이지 번호 : ${pageInfo['lastPageNum'] } -->
-					<my:pageItem pageNum="${pageInfo['lastPageNum'] }">
-						<i class="fa-solid fa-angles-right"></i>
-					</my:pageItem>
 
 				</ul>
 			</nav>

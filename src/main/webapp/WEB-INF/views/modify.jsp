@@ -41,6 +41,7 @@
 					</div>
 					<div>
 						<input class="btn btn-secondary" type="submit" value="수정" />
+						<a href="/id/${board.id}" class="btn btn-warning">취소</a>
 					</div>
 				</form>
 			</div>

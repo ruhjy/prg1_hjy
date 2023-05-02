@@ -19,11 +19,22 @@
 	<div class="container-lg">
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-8 col-lg-6">
-				<h1>${board.id }번게시물</h1>
+				<h1>${board.id }번 게시물</h1>
 				<div class="mb-3">
 					<label for="" class="form-label">제목</label>
 					<input type="text" class="form-control" value="${board.title }" readonly />
 				</div>
+
+				<!-- 그림 파일 출력 -->
+				<div class="mb-3">
+					<c:forEach items="${board.fileName}" var="fileName">
+						<div class="mb-3">
+							<%-- http://localhost:8080/image/게시물번호/fileName --%>
+							<img class="img-thumbnail img-fluid" src="http://localhost:8080/image/${board.id }/${fileName}" alt="" />
+						</div>
+					</c:forEach>
+				</div>
+
 				<div class="mb-3">
 					<label for="" class="form-label">본문</label>
 					<textarea class="form-control" rows="10" readonly>${board.body }</textarea>
@@ -39,6 +50,7 @@
 				<div>
 					<a class="btn btn-secondary" href="/modify/${board.id }">수정</a>
 					<button id="removeButton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">삭제</button>
+					<a class="btn btn-warning" href="/list">목록</a>
 				</div>
 			</div>
 		</div>
@@ -61,7 +73,7 @@
 				<div class="modal-body">삭제 하시겠습니까?</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-					<button type="submit" class="btn btn-danger" form="removeForm" >삭제</button>
+					<button type="submit" class="btn btn-danger" form="removeForm">삭제</button>
 				</div>
 			</div>
 		</div>
