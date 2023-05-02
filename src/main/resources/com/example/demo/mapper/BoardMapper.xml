@@ -1,0 +1,100 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.BoardMapper">
+
+	<resultMap type="com.example.demo.domain.Board" id="boardResultMap">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="body" property="body" />
+		<result column="writer" property="writer" />
+		<result column="inserted" property="inserted" />
+		<collection property="fileName" ofType="string">
+			<result column="fileName" />
+		</collection>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert
+		into Board (title, body, writer)
+		values
+		(#{title}, #{body}, #{writer})
+	</insert>
+
+	<insert id="insertFileName">
+		insert into FileName (boardId, fileName)
+		values
+		(#{boardId}, #{fileName})
+	</insert>
+
+	<update id="update">
+		update Board
+		set title = #{title},
+		body = #{body},
+		writer = #{writer}
+		where id = #{id}
+	</update>
+
+	<delete id="deleteById">
+		delete from Board where id = #{id}
+	</delete>
+
+	<select id="selectAll" resultType="Board">
+		select id, title, writer,
+		inserted from Board
+		order by id desc
+	</select>
+
+	<select id="selectById" resultType="Board" resultMap="boardResultMap">
+		select
+		b.id,
+		b.title,
+		b.body,
+		b.inserted,
+		b.writer,
+		f.fileName
+		from Board b
+		left join FileName f on b.id = f.boardId
+		where b.id = #{id}
+	</select>
+
+	업로드 하기 전 쿼리문
+	<select id="selectById" resultType="Board">
+		select * from Board where id = #{id}
+	</select>
+
+	<select id="selectAllPaging" resultType="Board">
+		<bind name="pattern" value=" '%' + search + '%'" />
+		select id, title, body, writer, inserted
+		from Board
+		<where>
+			<if test="(type eq 'all') or (type eq 'title')">
+				or title like #{pattern}
+			</if>
+			<if test="(type eq 'all') or (type eq 'body')">
+				or body like #{pattern}
+			</if>
+			<if test="(type eq 'all') or (type eq 'writer')">
+				or writer like #{pattern}
+			</if>
+		</where>
+		order by id desc limit #{startIndex}, #{rowPerPage}
+	</select>
+
+	<select id="countAll" resultType="Integer">
+		<bind name="pattern" value="'%' + search + '%'" />
+		select count(*) from Board
+		<where>
+			<if test="(type eq 'all') or (type eq 'title')">
+				or title like #{pattern}
+			</if>
+			<if test="(type eq 'all') or (type eq 'body')">
+				or body like #{pattern}
+			</if>
+			<if test="(type eq 'all') or (type eq 'writer')">
+				or writer like #{pattern}
+			</if>
+		</where>
+	</select>
+
+</mapper> -->
