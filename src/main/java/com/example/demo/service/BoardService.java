@@ -18,10 +18,10 @@ import lombok.extern.slf4j.*;
 @Transactional(rollbackFor = Exception.class)
 public class BoardService {
 
-	private final BoardMapper2 mapper;
+	private final BoardMapper mapper;
 
 	@Autowired // 생성자 하나일 경우 생략 가능
-	public BoardService(BoardMapper2 mapper) {
+	public BoardService(BoardMapper mapper) {
 		this.mapper = mapper;
 	}
 
@@ -35,21 +35,91 @@ public class BoardService {
 		return board;
 	}
 
-	public boolean modify(Board board) {
+	public boolean modify(Board board, MultipartFile[] addFiles, List<String> removeFileNames) {
+
+		// FileName 테이블 삭제
+		if (removeFileNames != null && !removeFileNames.isEmpty()) {
+			for (String fileName : removeFileNames) {
+				// 하드디스크에서 삭제
+				String path = "C:\\study\\upload\\" + board.getId() + "\\" + fileName;
+				File file = new File(path);
+
+				if (file.exists()) {
+					file.delete();
+				}
+
+				// 테이블에서 삭제
+				mapper.deleteFileNameByBoardIdAndFileName(board.getId(), fileName);
+			}
+		}
+
+		// 새 파일 추가
+		for (MultipartFile newFile : addFiles) {
+			if (newFile.getSize() > 0) {
+				// 테이블에 파일명 추가
+				mapper.insertFileName(board.getId(), newFile.getOriginalFilename());
+
+				String fileName = newFile.getOriginalFilename();
+				String folder = "C:\\study\\upload\\" + board.getId();
+				String path = folder + "\\" + fileName;
+
+				// 폴더 없으면 만들기
+				File dir = new File(folder);
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+
+				// 파일을 하드디스크에 저장
+				try {
+					File file = new File(path);
+					newFile.transferTo(file);
+				} catch (IllegalStateException e) {
+					log.error("modify error%%%%", e);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+		}
+
+		// 게시물(Board) 테이블 수정
 		int cnt = mapper.update(board);
+
 		return cnt == 1;
 	}
 
 	public boolean remove(Integer id) {
+
+		// 파일명 조회
+		List<String> fileNames = mapper.selectFileNamesByBoardId(id);
+
+		// FileName 테이블의 데이터 지우기
+		mapper.deleteFileNameByBoardId(id);
+
+		// 하드디스크의 파일 지우기
+		deleteFile(id, fileNames);
+
+		// 게시물 테이블의 데이터 지우기
 		int cnt = mapper.deleteById(id);
+
 		return cnt == 1;
+	}
+
+	private void deleteFile(Integer id, List<String> fileNames) {
+		for (String fileName : fileNames) {
+			String path = "C:\\study\\upload\\" + id + "\\" + fileName;
+			File file = new File(path);
+			if (file.exists()) {
+				file.delete();
+			}
+		}
 	}
 
 	// 2. 트랜잭션 처리하기 - 클래스 레벨에 @Transactional 선언
 	public boolean addBoard(Board board, MultipartFile[] files) {
 		// 게시물 insert
 		int cnt = mapper.insert(board);
-		
+
 		for (MultipartFile file : files) {
 			if (file.getSize() > 0) {
 				// 파일 저장 (파일 시스템에)
@@ -63,11 +133,11 @@ public class BoardService {
 
 				String path = folder + "\\" + file.getOriginalFilename();
 				log.info("path={}", path);
-			
+
 				File target = new File(path);
 				try {
 					file.transferTo(target);
-					
+
 				} catch (Exception e) {
 					log.error("file upload error= ", e);
 					throw new RuntimeException(e);
@@ -115,7 +185,7 @@ public class BoardService {
 		pageInfo.put("currentPageNum", page);
 		pageInfo.put("lastPageNum", lastPageNumber);
 		pageInfo.put("numOfRecords", numOfRecords);
-		
+
 		// 게시물 목록
 		List<Board> list = mapper.selectAllPaging(startIndex, rowPerpage, search, type);
 		return Map.of("pageInfo", pageInfo, "boardList", list);

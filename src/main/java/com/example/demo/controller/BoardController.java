@@ -18,54 +18,9 @@ import lombok.extern.slf4j.*;
 @Controller
 @RequestMapping("/")
 public class BoardController {
-
+	
 	@Autowired
 	private BoardService service;
-
-	/*
-	 * // 경로 : http://localhost:8080
-	 * // 경로 : http://localhost:8080/list
-	 * // 게시물 목록
-	 * // @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
-	 * 
-	 * @GetMapping(value = { "/", "/list" })
-	 * public String list(Model model) {
-	 * // 1. request param 수집/가공
-	 * // 2. business logic 처리
-	 * List<Board> list = service.listBoard();
-	 * 
-	 * // 3. add attribute
-	 * model.addAttribute("boardList", list);
-	 * 
-	 * // 4. forward / redirect
-	 * return "list";
-	 * }
-	 */
-
-	/*
-	 * // pagination 적용
-	 * // 경로 : http://localhost:8080?page=3
-	 * // 경로 : http://localhost:8080/list?page=3
-	 * // 게시물 목록
-	 * 
-	 * @GetMapping(value = { "/", "/list" })
-	 * public String list(Model model,
-	 * 
-	 * @RequestParam(value = "page", defaultValue = "1") Integer page) {
-	 * // 1. request param 수집/가공
-	 * // 2. business logic 처리
-	 * Map<String, Object> result = service.listBoard(page);
-	 * 
-	 * // 3. add attribute
-	 * // model.addAttribute("boardList", result.get("boardList"));
-	 * // model.addAttribute("pageInfo", result.get("pageInfo"));
-	 * // 서비스에 받은 정보 한번에 담기
-	 * model.addAllAttributes(result);
-	 * 
-	 * // 4. forward / redirect
-	 * return "list";
-	 * }
-	 */
 
 	// pagination 적용
 	// 경로 : http://localhost:8080?page=3
@@ -97,7 +52,7 @@ public class BoardController {
 		// 1. request param 수집/가공
 		// 2. business logic 처리
 		Board board = service.getBoard(id);
-
+		
 		// 3. add attribute
 		model.addAttribute("board", board);
 
@@ -122,8 +77,12 @@ public class BoardController {
 	// 수정
 //	@RequestMapping(value = "/modify/{id}", method = RequestMethod.POST)
 	@PostMapping("/modify/{id}")
-	public String modifyProcess(@ModelAttribute Board board, RedirectAttributes redirectAttributes) {
-		boolean ok = service.modify(board);
+	public String modifyProcess(
+			@RequestParam(value = "files", required = false) MultipartFile[] addFiles,
+			@RequestParam(value = "removeFiles", required = false) List<String> removeFileNames,
+			@ModelAttribute Board board, RedirectAttributes redirectAttributes) {
+		
+		boolean ok = service.modify(board, addFiles, removeFileNames);
 
 		if (ok) {
 			// 해당 게시물 보기로 리디렉션

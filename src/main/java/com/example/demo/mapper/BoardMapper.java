@@ -6,92 +6,134 @@ import org.apache.ibatis.annotations.*;
 
 import com.example.demo.domain.*;
 
-//@Mapper
+@Mapper
 public interface BoardMapper {
-
-//	@Select("select id, title, writer, inserted from Board order by id desc")
+	
+	@Select("""
+			SELECT
+				id,
+				title,
+				writer,
+				inserted
+			FROM Board
+			ORDER BY id DESC
+			""")
 	List<Board> selectAll();
 
-//	@Select("select * from Board where id = #{id}")
-//	@ResultMap("boardResultMap")
+	@Select("""
+			SELECT 
+				b.id,
+				b.title,
+				b.body,
+				b.inserted,
+				b.writer,
+				f.fileName
+			FROM Board b LEFT JOIN FileName f ON b.id = f.boardId
+			WHERE b.id = #{id}
+			""")
+	@ResultMap("boardResultMap")
 	Board selectById(Integer id);
 
-//	@Update("update Board "
-//			+ "set title = #{title}, "
-//			+ "	   body = #{body}, "
-//			+ "    writer = #{writer} "
-//			+ "where id = #{id}")
+	@Update("""
+			UPDATE Board
+			SET 
+				title = #{title},
+				body = #{body},
+				writer = #{writer}
+			WHERE
+				id = #{id}
+			""")
 	int update(Board board);
 
-//	@Delete("delete from Board where id = #{id}")
+	@Delete("""
+			DELETE FROM Board
+			WHERE id = #{id}
+			""")
 	int deleteById(Integer id);
 
-//	@Insert("insert into Board (title, body, writer) values (#{title}, #{body}, #{writer})")
-//	@Options(useGeneratedKeys = true, keyProperty = "id")
+	@Insert("""
+			INSERT INTO Board (title, body, writer)
+			VALUES (#{title}, #{body}, #{writer})
+			""")
+	@Options(useGeneratedKeys = true, keyProperty = "id")
 	int insert(Board board);
 
-//	@Select("<script> "
-//			+ "<bind name=\"pattern\" value=\"\'%\' + search + \'%\'\" /> "
-//			+ "    select id, title, writer, inserted from Board "
-//			+ "    where title like #{pattern} "
-//			+ "       or body like #{pattern} "
-//			+ "       or writer like #{pattern} "
-//			+ "order by id desc limit #{startIndex}, #{rowPerPage} "
-//			+ "</script>")
-//	List<Board> selectAllPaging(Integer startIndex, Integer rowPerPage, String search);
-
-//	@Select("<script> "
-//			+ "    select id, title, writer, inserted from Board "
-//			+ "<where> "
-//			+ "		<if test=\"(type eq \'all\') or (type eq \'title\')\"> "
-//			+ "			or title like concat(\'%\', #{search}, \'%\') "
-//			+ "		</if> "
-//			+ "		<if test=\"(type eq \'all\') or (type eq \'body\')\"> "
-//			+ "			or body like concat(\'%\', #{search} ,\'%\') "
-//			+ "		</if> "
-//			+ "		<if test=\"(type eq \'all\') or (type eq \'writer\')\"> "
-//			+ "			or writer like concat(\'%\', #{search} ,\'%\') "
-//			+ "		</if> "
-//			+ "</where>"
-//			+ "order by id desc limit #{startIndex}, #{rowPerPage} "
-//			+ "</script>")
+	@Select("""
+			<script>
+			<bind name="pattern" value="'%' + search + '%'" />
+			SELECT
+				b.id,
+				b.title,
+				b.writer,
+				b.inserted,
+				
+				count(f.id) fileCount
+			FROM Board b
+			left join FileName f on b.id = f.boardId
+			
+			<where>
+				<if test="(type eq 'all') or (type eq 'title')">
+				   title  LIKE #{pattern}
+				</if>
+				<if test="(type eq 'all') or (type eq 'body')">
+				OR body   LIKE #{pattern}
+				</if>
+				<if test="(type eq 'all') or (type eq 'writer')">
+				OR writer LIKE #{pattern}
+				</if>
+			</where>
+			
+			group by b.id
+			ORDER BY b.id DESC
+			LIMIT #{startIndex}, #{rowPerPage}
+			</script>
+			""")
 	List<Board> selectAllPaging(Integer startIndex, Integer rowPerPage, String search, String type);
 
-//	@Select("<script> "
-//			+ "    select id, title, writer, inserted from Board "
-//			+ "where title like concat(\'%\', #{search}, \'%\') "
-//			+ "<if test=\"type eq \'all\'\"> "
-//			+ "	 or	 body like concat(\'%\', #{search}, \'%\') "
-//			+ "  or  writer like concat(\'%\', #{search}, \'%\') "
-//			+ "</if>"
-//			+ "order by id desc limit #{startIndex}, #{rowPerPage} "
-//			+ "</script>")
-//	List<Board> selectAllPaging(Integer startIndex, Integer rowPerPage, String search, String type);
-
-//	@Select("select id, title, writer, inserted from Board "
-//			+ "where title like #{search} "
-//			+ "	 or	 body like #{search} "
-//			+ "  or  writer like #{search}"
-//			+ "order by id desc limit #{startIndex}, #{rowPerPage}")
-//	List<Board> selectAllPaging(Integer startIndex, Integer rowPerPage, String search);
-
-//	@Select("<script> "
-//			+ "<bind name=\"pattern\" value=\"\'%\' + search + \'%\'\" /> "
-//			+ "		select count(*) from Board "
-//			+ "<where> "
-//			+ "		<if test=\"(type eq \'all\') or (type eq \'title\')\"> "
-//			+ "			or title like #{pattern} "
-//			+ "		</if> "
-//			+ "		<if test=\"(type eq \'all\') or (type eq \'body\')\"> "
-//			+ "			or body like #{pattern} "
-//			+ "		</if> "
-//			+ "		<if test=\"(type eq \'all\') or (type eq \'writer\')\"> "
-//			+ "			or writer like #{pattern} "
-//			+ "		</if> "
-//			+ "</where>"
-//			+ "</script>")
+	@Select("""
+			<script>
+			<bind name="pattern" value="'%' + search + '%'" />
+			SELECT COUNT(*) 
+			FROM Board
+			
+			<where>
+				<if test="(type eq 'all') or (type eq 'title')">
+				   title  LIKE #{pattern}
+				</if>
+				<if test="(type eq 'all') or (type eq 'body')">
+				OR body   LIKE #{pattern}
+				</if>
+				<if test="(type eq 'all') or (type eq 'writer')">
+				OR writer LIKE #{pattern}
+				</if>
+			</where>
+			
+			</script>
+			""")
 	Integer countAll(String search, String type);
 
+	@Insert("""
+			INSERT INTO FileName (boardId, fileName)
+			VALUES (#{boardId}, #{fileName})
+			""")
 	Integer insertFileName(Integer boardId, String fileName);
 
+	@Select("""
+			select FileName from FileName where boardId = #{boardId}
+			""")
+	List<String> selectFileNamesByBoardId(Integer boardId);
+	
+	@Delete("""
+			delete from FileName where boardId = #{boardId}
+			""")
+	void deleteFileNameByBoardId(Integer boardId);
+
+	@Delete("""
+			delete from FileName 
+			where 
+				boardId = #{boardId}
+					and
+				fileName = #{fileName}
+			""")
+	void deleteFileNameByBoardIdAndFileName(Integer boardId, String fileName);
 }

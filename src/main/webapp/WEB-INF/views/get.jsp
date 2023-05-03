@@ -30,10 +30,12 @@
 					<c:forEach items="${board.fileName}" var="fileName">
 						<div class="mb-3">
 							<%-- http://localhost:8080/image/게시물번호/fileName --%>
-							<img class="img-thumbnail img-fluid" src="http://localhost:8080/image/${board.id }/${fileName}" alt="" />
+							<%-- <img class="img-thumbnail img-fluid" src="http://localhost:8080/image/${board.id }/${fileName}" alt="" /> --%>
+							<c:set var="bucketUrl" value="https://bucket0503-zxc1234zxc.s3.ap-northeast-2.amazonaws.com/board" />
+							<img class="img-thumbnail img-fluid" src="${bucketUrl }/${board.id }/${fileName}" alt="" />
 						</div>
 					</c:forEach>
-				</div>
+				</div> 
 
 				<div class="mb-3">
 					<label for="" class="form-label">본문</label>
