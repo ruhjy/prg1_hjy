@@ -58,24 +58,5 @@ public class MemberController {
 		return "member/info";
 	}
 	
-	@GetMapping("/{id}/update")
-	public String updateMemberForm(@PathVariable("id") String id, Model model) {
-		Member member = service.findById(id);
-		model.addAttribute("member", member);
-		return "member/updateForm";
-	}
-	
-	@PostMapping("/{id}/update")
-	public String updateMember(@PathVariable("id") String id, @ModelAttribute("member") UpdateMemberForm form, RedirectAttributes redirectAttributes) {
-		
-		try {
-			service.update(id, form);
-			redirectAttributes.addFlashAttribute("message", "회원 수정 성공!");
-			return "redirect:/{id}";
-		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute("message", "회원 수정 실패!");
-			return "";
-		}	
-	}
 
 }

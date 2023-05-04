@@ -23,7 +23,7 @@ public interface MemberMapper {
 	List<Member> selectAll();
 	
 	@Select("select id, password, nickName, email, inserted from Member where id = #{id}")
-	Member findById(String id);
+	Member selectById(String id);
 	
 	@Update("""
 			update Member

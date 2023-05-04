@@ -31,7 +31,7 @@ public class MemberService {
 	}
 	
 	public Member get(String id) {
-		return mapper.findById(id);
+		return mapper.selectById(id);
 	}
 	
 	public boolean update(String id, UpdateMemberForm form) {
