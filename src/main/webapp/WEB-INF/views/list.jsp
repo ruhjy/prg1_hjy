@@ -15,7 +15,7 @@
 	<my:navBar current="list" />
 	<my:alert />
 	<div class="container-lg">
-		<h1>게시물 목록</h1>
+		<h1>게시물 목록-수정1</h1><a href="/member/signup">회원가입</a>
 		게시물 수 : ${pageInfo['numOfRecords']}
 		<c:url value="/list" var="pageLink">
 			<c:param name="page" value="${pageInfo['currentPageNum'] }"></c:param>
@@ -42,6 +42,7 @@
 					<th>번호</th>
 					<th>제목</th>
 					<th>작성자</th>
+					<th>조회수</th>
 					<th>작성일시</th>
 				</tr>
 			</thead>
@@ -59,6 +60,7 @@
 							</c:if>
 						</td>
 						<td>${board.writer }</td>
+						<td>${board.hit }</td>
 						<td>${board.inserted }</td>
 					</tr>
 				</c:forEach>
