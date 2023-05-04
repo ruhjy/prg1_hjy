@@ -13,6 +13,7 @@ import com.example.demo.domain.*;
 import com.example.demo.service.*;
 
 import lombok.extern.slf4j.*;
+import software.amazon.awssdk.services.s3.*;
 
 @Slf4j
 @Controller

@@ -9,6 +9,7 @@
 		<result column="title" property="title" />
 		<result column="body" property="body" />
 		<result column="writer" property="writer" />
+		<result column="hit" property="hit" />
 		<result column="inserted" property="inserted" />
 		<collection property="fileName" ofType="string">
 			<result column="fileName" />
