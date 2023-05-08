@@ -25,7 +25,7 @@
 	<div class="container-lg">
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-8 col-lg-6">
-				<h1>${board.id }번게시물 수정</h1>
+				<h1>${board.id }번 게시물 수정</h1>
 				<form action="" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="id" value="${board.id }" />
 
