@@ -20,53 +20,50 @@
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-8 col-lg-6">
 
-				<h1>${member.id }님 회원 정보</h1>
+				<h1>${member.id }님 회원 정보 수정</h1>
 
-				<div class="mb-3">
-					<label for="" class="form-label">아이디</label>
-					<input type="text" class="form-control" name="id" value="${member.id }" readonly />
-				</div>
-
-				<div class="mb-3">
-					<label for="" class="form-label">별명</label>
-					<input type="text" class="form-control" value="${member.nickName }" readonly />
-				</div>
-
-				<div class="mb-3">
-					<label for="" class="form-label">이메일</label>
-					<input type="text" class="form-control" value="${member.email }" readonly />
-				</div>
-
-				<div>
-					<a class="btn btn-secondary" href="/member/modify?id=${member.id }">수정</a>
-					<button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal">탈퇴</button>
-					<a class="btn btn-warning" href="/member/list">회원목록</a>
-				</div>
+				<form id="modifyForm" action="" method="post">
+					<div class="mb-3">
+						<label for="inputId" class="form-label">아이디</label>
+						<input id="inputId" type="text" class="form-control" value="${member.id }" readonly />
+					</div>
+					<div class="mb-3">
+						<label for="inputPassword" class="form-label">비밀번호</label>
+						<input id="inputPassword" type="password" class="form-control" name="password" />
+					</div>
+					<div class="mb-3">
+						<label for="inputnickName" class="form-label">별명</label>
+						<input id="inputnickName" type="text" class="form-control" name="nickName" value="${member.nickName }" />
+					</div>
+					<div class="mb-3">
+						<label for="inputEmail" class="form-label">이메일</label>
+						<input id="inputEmail" type="text" class="form-control" name="email" value="${member.email }" />
+					</div>
+					<div>
+						<input type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal" value="수정" />
+						<a class="btn btn-secondary" href="/member/info?id=${member.id }">취소</a>
+					</div>
+				</form>
 
 			</div>
 		</div>
 	</div>
 
-
-
-	<!-- 탈퇴 확인 Modal -->
+	<!-- 수정 확인 Modal -->
 	<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="exampleModalLabel">회원 탈퇴 확인</h1>
+					<h1 class="modal-title fs-5" id="exampleModalLabel">수정 확인</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form action="/member/remove" method="post" id="removeForm">
-						<input type="hidden" name="id" value="${member.id}" />
-						<label for="passwordInput">비밀번호</label>
-						<input id="passwordInput" type="password" name="password" class="form-control" />
-					</form>
+					<label for="inputOldPassword" class="form-label">이전 비밀번호</label>
+					<input form="modifyForm" id="inputOldPassword" class="form-control" type="text" name="oldPassword" />
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-					<button type="submit" class="btn btn-danger" form="removeForm">확인</button>
+					<button type="submit" form="modifyForm" class="btn btn-primary">확인</button>
 				</div>
 			</div>
 		</div>

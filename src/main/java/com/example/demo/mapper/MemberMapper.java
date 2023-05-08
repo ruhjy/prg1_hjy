@@ -25,13 +25,17 @@ public interface MemberMapper {
 	@Select("select id, password, nickName, email, inserted from Member where id = #{id}")
 	Member selectById(String id);
 	
+	@Delete("delete from Member where id = #{id}")
+	Integer deleteById(String id);
+
 	@Update("""
 			update Member
-			set 
-				password = #{update.password},
+			set password = #{update.password},
 				nickName = #{update.nickName},
 				email = #{update.email}
-			where id = #{id};
+			where id = #{memberId}
 			""")
-	Integer update(String id, UpdateMemberForm update);
+	Integer updateMember(String memberId, Member update);
+	
+	
 }

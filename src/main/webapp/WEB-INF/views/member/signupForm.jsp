@@ -38,7 +38,7 @@
 					</div>
 					<div class="mb-3">
 						<input type="submit" class="btn btn-primary" value="가입" />
-						<a class="btn btn-warning" href="/">목록</a>
+						<a class="btn btn-warning" href="/member/list">목록</a>
 					</div>
 				</form>
 			</div>

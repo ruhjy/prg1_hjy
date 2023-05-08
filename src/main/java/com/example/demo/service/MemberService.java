@@ -25,17 +25,43 @@ public class MemberService {
 		int cnt = mapper.insert(member);
 		return cnt == 1;
 	}
-	
+
 	public List<Member> listMember() {
 		return mapper.selectAll();
 	}
-	
+
 	public Member get(String id) {
 		return mapper.selectById(id);
 	}
-	
-	public boolean update(String id, UpdateMemberForm form) {
-		int cnt = mapper.update(id, form);
+
+	public boolean remove(Member member) {
+		Member oldMember = mapper.selectById(member.getId());
+		int cnt = 0;
+		
+		if (oldMember.getPassword().equals(member.getPassword())) {
+			// 암호가 같으면?
+			cnt = mapper.deleteById(member.getId());
+		} 
+		
 		return cnt == 1;
 	}
+
+	// 수정 시 이전 비밀번호 확인 기능 추가
+	public boolean modify(String memberId, String oldPassword, Member member) {
+		Member oldMember = mapper.selectById(memberId);
+		
+		int cnt = 0;
+		
+		// 이전 비밀번호가 같으면 수정
+		if (oldMember.getPassword().equals(oldPassword)) {
+			cnt = mapper.updateMember(memberId, member);
+		}
+		return cnt == 1;
+	}
+	
+	public boolean modify2(String memberId, Member member) {
+		int cnt = mapper.updateMember(memberId, member);
+		return cnt == 1;
+	}
+
 }
