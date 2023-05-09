@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.access.prepost.*;
+import org.springframework.security.core.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +64,7 @@ public class BoardController {
 	}
 
 	// 수정 폼
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modify/{id}")
 	public String modifyForm(@PathVariable("id") Integer id, Model model) {
 		// 1. request param 수집/가공
@@ -77,6 +80,7 @@ public class BoardController {
 
 	// 수정
 //	@RequestMapping(value = "/modify/{id}", method = RequestMethod.POST)
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify/{id}")
 	public String modifyProcess(
 			@RequestParam(value = "files", required = false) MultipartFile[] addFiles,
@@ -105,6 +109,7 @@ public class BoardController {
 
 	// 삭제
 //	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/remove")
 	public String remove(@RequestParam Integer id, RedirectAttributes redirectAttributes) {
 		boolean ok = service.remove(id);
@@ -124,6 +129,7 @@ public class BoardController {
 	}
 
 	// 추가 폼
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/add")
 	public String addForm(@ModelAttribute Board board) {
 		// 반환 타입 void로 할 경우 return 생략 가능
@@ -132,13 +138,16 @@ public class BoardController {
 	}
 
 	// 추가
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/add")
 	public String addProcess(
 			@RequestParam("files") MultipartFile[] files,
 			@ModelAttribute Board board,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes,
+			Authentication authentication) {
 		// 새 게시물 db에 추가
 		// 2.
+		board.setWriter(authentication.getName());
 		boolean ok = service.addBoard(board, files);
 		// 3.
 		// 4.

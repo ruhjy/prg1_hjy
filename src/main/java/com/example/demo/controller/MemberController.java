@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.*;
 
+import org.springframework.security.access.prepost.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.util.*;
@@ -24,11 +25,18 @@ public class MemberController {
 		this.service = service;
 	}
 
+	@GetMapping("/login")
+	public String loginForm() {
+		return "member/loginForm";
+	}
+	
+	@PreAuthorize("isAnonymous()")
 	@GetMapping("/signup")
 	public String signupForm() {
 		return "member/signupForm";
 	}
 
+	@PreAuthorize("isAnonymous()")
 	@PostMapping("/signup")
 	public String signupProcess(@ModelAttribute("member") Member member, RedirectAttributes redirectAttributes) {
 
@@ -52,6 +60,7 @@ public class MemberController {
 	}
 
 	// 경로 : /member/info?id=asdf
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/info")
 	public String memberInfo(@RequestParam("id") String id, Model model) {
 		Member member = service.get(id);
@@ -59,6 +68,7 @@ public class MemberController {
 		return "member/info";
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/remove")
 	public String remove(@ModelAttribute Member member, RedirectAttributes redirectAttributes) {
 
@@ -76,6 +86,7 @@ public class MemberController {
 	}
 
 	// 1. get modify
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modify")
 	public String modifyForm(@RequestParam String id, Model model) {
 		Member member = service.get(id);
@@ -84,6 +95,7 @@ public class MemberController {
 	}
 
 	// 2. post modify - 수정 시 이전 비밀번호 확인 기능 추가
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify")
 	public String modifyMember(
 			@RequestParam("id") String memberId,

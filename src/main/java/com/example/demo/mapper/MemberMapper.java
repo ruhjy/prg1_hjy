@@ -28,6 +28,22 @@ public interface MemberMapper {
 	@Delete("delete from Member where id = #{id}")
 	Integer deleteById(String id);
 
+	// 시큐리티 적용 - 수정
+	@Update("""
+			<script>
+				update Member
+				set 
+					<if test="password neq null and password neq ''">
+						password = #{update.password},
+					</if>
+					
+					nickName = #{update.nickName},
+					email = #{update.email}
+				where id = #{memberId}
+			</script>
+			""")
+	Integer update(String memberId, Member update);
+	
 	@Update("""
 			update Member
 			set password = #{update.password},
@@ -35,7 +51,9 @@ public interface MemberMapper {
 				email = #{update.email}
 			where id = #{memberId}
 			""")
-	Integer updateMember(String memberId, Member update);
+	Integer update2(String memberId, Member update);
+	
+	
 	
 	
 }
