@@ -30,6 +30,9 @@
 					<div class="mb-3">
 						<label for="inputPassword" class="form-label">비밀번호</label>
 						<input id="inputPassword" type="password" class="form-control" name="password" />
+						<div class="form-text">
+							입력하지 않으면 기존 패스워드를 유지합니다.
+						</div>
 					</div>
 					<div class="mb-3">
 						<label for="inputnickName" class="form-label">별명</label>
