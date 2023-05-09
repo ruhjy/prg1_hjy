@@ -59,10 +59,6 @@
 						<textarea id="bodyTextarea" class="form-control" name="body" rows="10">${board.body }</textarea>
 					</div>
 					<div class="mb-3">
-						<label for="writerInput" class="form-label">작성자</label>
-						<input id="writerInput" type="text" class="form-control" name="writer" value="${board.writer }" />
-					</div>
-					<div class="mb-3">
 						<label for="" class="form-label">작성일시</label>
 						<input type="text" class="form-control" name="inserted" value="${board.inserted }" readonly />
 					</div>
