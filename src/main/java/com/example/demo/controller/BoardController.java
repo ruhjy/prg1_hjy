@@ -64,7 +64,7 @@ public class BoardController {
 	}
 
 	// 수정 폼
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated() and @customSecurityChecker.checkBoardWriter(authentication, #id)")
 	@GetMapping("/modify/{id}")
 	public String modifyForm(@PathVariable("id") Integer id, Model model) {
 		// 1. request param 수집/가공
@@ -80,7 +80,8 @@ public class BoardController {
 
 	// 수정
 //	@RequestMapping(value = "/modify/{id}", method = RequestMethod.POST)
-	@PreAuthorize("isAuthenticated()")
+	// 수정하려는 게시물 id = board.id
+	@PreAuthorize("isAuthenticated() and @customSecurityChecker.checkBoardWriter(authentication, #board.id)")
 	@PostMapping("/modify/{id}")
 	public String modifyProcess(
 			@RequestParam(value = "files", required = false) MultipartFile[] addFiles,
@@ -109,7 +110,7 @@ public class BoardController {
 
 	// 삭제
 //	@RequestMapping(value = "/remove", method = RequestMethod.POST)
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated() and @customSecurityChecker.checkBoardWriter(authentication, #id)")
 	@PostMapping("/remove")
 	public String remove(@RequestParam Integer id, RedirectAttributes redirectAttributes) {
 		boolean ok = service.remove(id);
