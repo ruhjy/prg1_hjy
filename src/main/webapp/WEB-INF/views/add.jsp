@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="my" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,15 +31,9 @@
 						<textarea rows="10" id="bodyTextarea" class="form-control" name="body">${board.body }</textarea>
 					</div>
 					<div class="mb-3">
-						<label for="writerInput" class="form-label">작성자</label>
-						<input id="writerInput" class="form-control" type="text" name="writer" value="${board.writer }" />
-					</div>
-					<div class="mb-3">
 						<label for="fileInput" class="form-label">그림 파일</label>
 						<input id="fileInput" class="form-control" type="file" name="files" accept="image/*" multiple />
-						<div class="form-text">
-							총 10MB, 하나의 파일은 1MB를 초과할 수 없습니다. 
-						</div>
+						<div class="form-text">총 10MB, 하나의 파일은 1MB를 초과할 수 없습니다.</div>
 					</div>
 					<div class="mb-3">
 						<input class="btn btn-primary" type="submit" value="등록" />
