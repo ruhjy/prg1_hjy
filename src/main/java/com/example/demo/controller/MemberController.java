@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.*;
 
 import org.springframework.security.access.prepost.*;
+import org.springframework.security.authorization.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.util.*;
@@ -12,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.*;
 import com.example.demo.domain.*;
 import com.example.demo.service.*;
 
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 import lombok.extern.slf4j.*;
 
 @Slf4j
@@ -52,6 +55,7 @@ public class MemberController {
 		}
 	}
 
+	@PreAuthorize("hasAuthority('admin')")
 	@GetMapping("/list")
 	public String listForm(Model model) {
 		List<Member> memberList = service.listMember();
@@ -60,7 +64,7 @@ public class MemberController {
 	}
 
 	// 경로 : /member/info?id=asdf
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated() and (authentication.name eq #id)") // 회원 정보 권한 설정
 	@GetMapping("/info")
 	public String memberInfo(@RequestParam("id") String id, Model model) {
 		Member member = service.get(id);
@@ -68,14 +72,22 @@ public class MemberController {
 		return "member/info";
 	}
 
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated() and (authentication.name eq #member.id)") // 회원 탈퇴 권한 설정
 	@PostMapping("/remove")
-	public String remove(@ModelAttribute Member member, RedirectAttributes redirectAttributes) {
+	public String remove(@ModelAttribute Member member, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 
 		boolean ok = service.remove(member);
 
 		if (ok) {
 			redirectAttributes.addFlashAttribute("message", "회원 탈퇴 성공!");
+			
+			// 로그아웃
+			try {
+				request.logout();
+			} catch (ServletException e) {
+				e.printStackTrace();
+			}
+			
 			return "redirect:/member/list";
 		} else {
 			redirectAttributes.addAttribute("id", member.getId());
@@ -86,7 +98,7 @@ public class MemberController {
 	}
 
 	// 1. get modify
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated() and (authentication.name eq #id)")
 	@GetMapping("/modify")
 	public String modifyForm(@RequestParam String id, Model model) {
 		Member member = service.get(id);
@@ -95,7 +107,7 @@ public class MemberController {
 	}
 
 	// 2. post modify - 수정 시 이전 비밀번호 확인 기능 추가
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated() and (authentication.name eq #memberId)")
 	@PostMapping("/modify")
 	public String modifyMember(
 			@RequestParam("id") String memberId,

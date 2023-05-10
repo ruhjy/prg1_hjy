@@ -141,4 +141,7 @@ public interface BoardMapper {
 			update Board set hit = hit + 1 where id = #{boardId}
 			""")
 	void plusHit(Integer boardId);
+
+	@Select("select id from Board where writer = #{writer}")
+	List<Integer> selectBoardIdByWriter(String writer);
 }

@@ -22,7 +22,20 @@ public interface MemberMapper {
 			""")
 	List<Member> selectAll();
 	
-	@Select("select id, password, nickName, email, inserted from Member where id = #{id}")
+//	@Select("""
+//			select id, password, nickName, email, inserted
+//			from Member m
+//				join MemberAuthority ma on m.id = ma.memberId
+//			where id = #{id}
+//			""")
+////	@ResultMap("memberMap")
+//	Member selectById(String id);
+	
+	@Select("""
+			select id, password, nickName, email, inserted
+			from Member
+			where id = #{id}
+			""")
 	Member selectById(String id);
 	
 	@Delete("delete from Member where id = #{id}")

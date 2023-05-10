@@ -12,7 +12,7 @@
 </head>
 <body>
 
-	<my:navBar />
+	<my:navBar current="memberInfo" />
 
 	<my:alert />
 
