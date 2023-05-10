@@ -10,63 +10,47 @@ import com.example.demo.domain.*;
 public interface MemberMapper {
 
 	@Insert("""
-			insert into Member (id, password, nickName, email)
-			values
-				(#{id}, #{password}, #{nickName}, #{email})
+			INSERT INTO Member (id, password, nickName, email)
+			VALUES (#{id}, #{password}, #{nickName}, #{email})
 			""")
 	int insert(Member member);
-	
+
 	@Select("""
-			select id, password, nickName, email, inserted
-			from Member order by inserted desc
+			SELECT *
+			FROM Member
+			ORDER BY inserted DESC
 			""")
 	List<Member> selectAll();
-	
-//	@Select("""
-//			select id, password, nickName, email, inserted
-//			from Member m
-//				join MemberAuthority ma on m.id = ma.memberId
-//			where id = #{id}
-//			""")
-////	@ResultMap("memberMap")
-//	Member selectById(String id);
-	
+
 	@Select("""
-			select id, password, nickName, email, inserted
-			from Member
-			where id = #{id}
+			SELECT *
+			FROM Member m LEFT JOIN MemberAuthority ma ON m.id = ma.memberId
+			WHERE id = #{id}
 			""")
+	@ResultMap("memberMap")
 	Member selectById(String id);
-	
-	@Delete("delete from Member where id = #{id}")
+
+	@Delete("""
+			DELETE FROM Member
+			WHERE id = #{id}
+			""")
 	Integer deleteById(String id);
 
-	// 시큐리티 적용 - 수정
 	@Update("""
 			<script>
-				update Member
-				set 
-					<if test="password neq null and password neq ''">
-						password = #{update.password},
-					</if>
-					
-					nickName = #{update.nickName},
-					email = #{update.email}
-				where id = #{memberId}
+
+			UPDATE Member
+			SET
+				<if test="password neq null and password neq ''">
+				password = #{password},
+				</if>
+
+			    nickName = #{nickName},
+			    email = #{email}
+			WHERE
+				id = #{id}
+
 			</script>
 			""")
-	Integer update(String memberId, Member update);
-	
-	@Update("""
-			update Member
-			set password = #{update.password},
-				nickName = #{update.nickName},
-				email = #{update.email}
-			where id = #{memberId}
-			""")
-	Integer update2(String memberId, Member update);
-	
-	
-	
-	
+	Integer update(Member member);
 }

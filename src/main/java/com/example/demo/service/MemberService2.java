@@ -15,9 +15,9 @@ import lombok.extern.slf4j.*;
 @Transactional(rollbackFor = Exception.class)
 public class MemberService2 {
 
-	private final MemberMapper mapper;
+	private final MemberMapper0510 mapper;
 
-	public MemberService2(MemberMapper mapper) {
+	public MemberService2(MemberMapper0510 mapper) {
 		this.mapper = mapper;
 	}
 

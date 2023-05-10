@@ -12,52 +12,32 @@
 </head>
 <body>
 
-	<my:navBar></my:navBar>
+	<my:navBar current="login"></my:navBar>
 
 	<div class="container-lg">
 		<div class="row justify-content-center">
-			<div class="col-12">
-				<h1>회원 목록</h1>
-				<!-- table.table>thead>tr>th*5^^tbody -->
-				<table class="table">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>PASSWORD</th>
-							<th>별명</th>
-							<th>이메일</th>
-							<th>가입일시</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${memberList }" var="member">
-							<tr>
-								<td>
-									<c:url value="/member/info" var="memberInfoLink">
-										<c:param name="id" value="${member.id }"></c:param>
-									</c:url>
-									<a href="${memberInfoLink }">
-										${member.id }
-									</a>
-								
-								</td>
-								<td>${member.password }</td>
-								<td>${member.nickName }</td>
-								<td>${member.email }</td>
-								<td>${member.inserted }</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+			<div class="col-12 col-md-8 col-lg-6">
+				<h1>로그인</h1>
+				<form method="post">
+					<div class="mb-3">
+						<label for="inputUsername" class="form-label"> 아이디</label>
+						<input id="inputUsername" class="form-control" type="text" name="username" />
+					</div>
+					<div class="mb-3">
+						<label for="inputPassword" class="form-label">암호</label>
+						<input id="inputPassword" class="form-control" type="text" name="password" />
+					</div>
+					<input class="btn btn-primary" type="submit" value="로그인" />
+				</form>
 			</div>
 		</div>
 	</div>
-
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>
+
 
 
 
