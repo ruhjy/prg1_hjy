@@ -46,8 +46,8 @@ $("#checkEmailBtn").click(function() {
 				$("#availableEmailMessage").removeClass("d-none");
 				$("#notAvailableEmailMessage").addClass("d-none");
 			} else {
-				$("#notAvailableEmailMessage").addClass("d-none");
-				$("#availableEmailMessage").removeClass("d-none");
+				$("#notAvailableEmailMessage").removeClass("d-none");
+				$("#availableEmailMessage").addClass("d-none");
 			}
 		}
 	});
