@@ -26,8 +26,8 @@
 						<input id="inputId" type="text" class="form-control" name="id" value="${member.id }" />
 
 						<!-- 아이디 중복 체크 -->
-						<div id="availableIdMessage">사용 가능한 아이디 입니다.</div>
-						<div id="notAvailableIdMessage">사용 불가능한 아이디 입니다.</div>
+						<div class="d-none" id="availableIdMessage">사용 가능한 아이디 입니다.</div>
+						<div class="d-none" id="notAvailableIdMessage">사용 불가능한 아이디 입니다.</div>
 
 						<button type="button" id="checkIdBtn">중복확인</button>
 
@@ -56,8 +56,8 @@
 						<input id="inputNickName" type="text" class="form-control" name="nickName" value="${member.nickName }" />
 
 						<!-- 별명 중복체크 -->
-						<div id="availableNickNameMessage">사용 가능</div>
-						<div id="notAvailableNickNameMessage">사용 불가능</div>
+						<div class="d-none" id="availableNickNameMessage">사용 가능</div>
+						<div class="d-none" id="notAvailableNickNameMessage">사용 불가능</div>
 
 						<button type="button" id="checkNickNameBtn">중복확인</button>
 					</div>
@@ -66,14 +66,14 @@
 						<input id="inputEmail" type="email" class="form-control" name="email" value="${member.email }" />
 
 						<!-- 이메일 중복체크 -->
-						<div id="availableEmailMessage">사용 가능</div>
-						<div id="notAvailableEmailMessage">사용 불가능</div>
+						<div class="d-none" id="availableEmailMessage">사용 가능</div>
+						<div class="d-none" id="notAvailableEmailMessage">사용 불가능</div>
 
 						<button type="button" id="checkEmailBtn">중복확인</button>
 
 					</div>
 					<div class="mb-3">
-						<input id="signupSubmit" type="submit" class="btn btn-primary disabled" value="가입" />
+						<input id="signupSubmit" type="submit" class="btn btn-primary" disabled value="가입" />
 					</div>
 				</form>
 			</div>
