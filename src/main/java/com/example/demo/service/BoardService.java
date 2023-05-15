@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 import org.springframework.web.multipart.*;
@@ -28,11 +29,13 @@ public class BoardService {
 
 	private final S3Client s3;
 	private final BoardMapper mapper;
+	private final BoardLikeMapper likeMapper;
 
 	@Autowired // 생성자 하나일 경우 생략 가능
-	public BoardService(S3Client s3, BoardMapper mapper) {
+	public BoardService(S3Client s3, BoardMapper mapper, BoardLikeMapper likeMapper) {
 		this.s3 = s3;
 		this.mapper = mapper;
+		this.likeMapper = likeMapper;
 	}
 
 	public List<Board> listBoard() {
@@ -193,6 +196,20 @@ public class BoardService {
 		for (Integer id : idList) {
 			remove(id);
 		}
+	}
+
+	public Map<String, Object> like(Like like, Authentication authentication) {
+		Map<String, Object> result = new HashMap<>();
+		result.put("like", false);
+
+		like.setMemberId(authentication.getName());
+		Integer deleteCnt = likeMapper.delete(like);
+		if (deleteCnt != 1) {
+			Integer insertCnt = likeMapper.insert(like);
+			result.put("like", true);
+		}
+
+		return result;
 	}
 
 }

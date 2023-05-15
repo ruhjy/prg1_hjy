@@ -15,7 +15,6 @@ import com.example.demo.domain.*;
 import com.example.demo.service.*;
 
 import lombok.extern.slf4j.*;
-import software.amazon.awssdk.services.s3.*;
 
 @Slf4j
 @Controller
@@ -162,6 +161,13 @@ public class BoardController {
 			redirectAttributes.addFlashAttribute("message", "글 등록 중 문제가 발생하였습니다.");
 			return "redirect:/add";
 		}
+	}
+	
+	// 좋아요 기능
+	@ResponseBody
+	@PostMapping("/like")
+	public Map<String, Object> like(@RequestBody Like like, Authentication authentication) {
+		return service.like(like, authentication);
 	}
 
 }

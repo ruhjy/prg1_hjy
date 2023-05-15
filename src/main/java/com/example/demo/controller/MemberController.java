@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.access.prepost.*;
+import org.springframework.security.core.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 
+	// 회원가입 & 회원 수정
 	// 아이디 중복 체크
 	@ResponseBody
 	@GetMapping("/checkId/{id}")
@@ -32,15 +34,15 @@ public class MemberController {
 	// 별명 중복 체크
 	@ResponseBody
 	@GetMapping("/checkNickName/{nickName}")
-	public Map<String, Object> checkNickName(@PathVariable String nickName) {
-		return service.checkNickName(nickName);
+	public Map<String, Object> checkNickName(@PathVariable String nickName, Authentication authentication) {
+		return service.checkNickName(nickName, authentication);
 	}
 	
 	// 이메일 중복 체크
 	@ResponseBody
 	@GetMapping("/checkEmail/{email}")
-	public Map<String, Object> checkEmail(@PathVariable String email) {
-		return service.checkEmail(email);
+	public Map<String, Object> checkEmail(@PathVariable String email, Authentication authentication) {
+		return service.checkEmail(email, authentication);
 	}
 
 	@GetMapping("signup")
@@ -132,4 +134,5 @@ public class MemberController {
 		}
 
 	}
+	
 }

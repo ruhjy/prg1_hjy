@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.*;
 import org.springframework.security.crypto.password.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
@@ -10,6 +11,9 @@ import org.springframework.transaction.annotation.*;
 import com.example.demo.domain.*;
 import com.example.demo.mapper.*;
 
+import lombok.extern.slf4j.*;
+
+@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class MemberService {
@@ -90,16 +94,33 @@ public class MemberService {
 	}
 
 	// 별명 중복 체크
-	public Map<String, Object> checkNickName(String nickName) {
+	public Map<String, Object> checkNickName(String nickName, Authentication authentication) {
 		Member member = mapper.selectByNickName(nickName);
 
-		return Map.of("available", member == null);
+		if (authentication != null) {
+			String oldId = authentication.getName();
+			Member oldMember = mapper.selectById(oldId);
+
+			return Map.of("available", member == null || oldMember.getNickName().equals(nickName));
+		} else {
+			return Map.of("available", member == null);
+
+		}
+
 	}
 
 	// 이메일 중복 체크
-	public Map<String, Object> checkEmail(String email) {
+	public Map<String, Object> checkEmail(String email, Authentication authentication) {
 		Member member = mapper.selectByEmail(email);
+
+		if (authentication != null) {
+			String oldId = authentication.getName();
+			Member oldMember = mapper.selectById(oldId);
+
+			return Map.of("available", member == null || oldMember.getEmail().equals(email));
+		}
 
 		return Map.of("available", member == null);
 	}
+
 }

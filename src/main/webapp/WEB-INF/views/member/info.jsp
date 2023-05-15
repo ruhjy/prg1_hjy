@@ -44,7 +44,10 @@
 					<button type="button" data-bs-toggle="modal" class="btn btn-danger" data-bs-target="#confirmModal">탈퇴</button>
 				</sec:authorize>
 				
-				<a class="btn btn-warning" href="/member/list">회원목록</a>
+				<sec:authorize access="hasAuthority('admin')">
+					<a class="btn btn-warning" href="/member/list">회원목록</a>
+				</sec:authorize>
+				
 			</div>
 		</div>
 	</div>

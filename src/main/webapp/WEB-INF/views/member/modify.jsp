@@ -48,14 +48,39 @@
 
 					<div class="mb-3">
 						<label class="form-label" for="inputNickName"> 별명 </label>
-						<input id="inputNickName" class="form-control" type="text" name="nickName" value="${member.nickName }" />
-					</div>
-					<div class="mb-3">
-						<label class="form-label" for="inputEmail"> 이메일 </label>
-						<input id="inputEmail" class="form-control" type="email" name="email" value="${member.email }" />
+						<div class="input-group">
+							<input id="inputNickName" class="form-control" type="text" name="nickName" value="${member.nickName }" />
+							<button id="checkNickNameBtn" type="button" class="btn btn-outline-info">중복확인</button>
+						</div>
+
+						<div id="availableNickNameMessage" class="form-text text-primary">
+							<i class="fa-solid fa-check"></i>
+							사용 가능
+						</div>
+						<div id="notAvailableNickNameMessage" class="form-text text-danger d-none">
+							<i class="fa-solid fa-triangle-exclamation"></i>
+							사용 불가능
+						</div>
 					</div>
 
-					<button id="modifyButton" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal" class="btn btn-primary">수정</button>
+					<div class="mb-3">
+						<label class="form-label" for="inputEmail"> 이메일 </label>
+						<div class="input-group">
+							<input id="inputEmail" class="form-control" type="email" name="email" value="${member.email }" />
+							<button id="checkEmailBtn" type="button" class="btn btn-outline-info">중복확인</button>
+						</div>
+
+						<div id="availableEmailMessage" class="form-text text-primary">
+							<i class="fa-solid fa-check"></i>
+							사용 가능
+						</div>
+						<div id="notAvailableEmailMessage" class="form-text text-danger d-none">
+							<i class="fa-solid fa-triangle-exclamation"></i>
+							사용 불가능
+						</div>
+					</div>
+
+					<button disabled id="modifyButton" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal" class="btn btn-primary">수정</button>
 				</form>
 
 			</div>

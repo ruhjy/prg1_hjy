@@ -21,7 +21,15 @@ alter table Board add column hit int after writer;
 select * from Member order by inserted desc;
 select id, password from Member where id = 'test2';
 
-delete from Member where id = 'while';
+delete from Member where id = '';
+
+update Board set writer = 'while';
+
+SELECT *
+			FROM Member m 
+				LEFT JOIN MemberAuthority ma ON m.id = ma.memberId
+			WHERE 
+				id = 'qqq';
 
 
 

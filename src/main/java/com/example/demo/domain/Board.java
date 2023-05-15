@@ -3,8 +3,6 @@ package com.example.demo.domain;
 import java.time.*;
 import java.util.*;
 
-import com.example.demo.service.*;
-
 import lombok.*;
 
 @Data

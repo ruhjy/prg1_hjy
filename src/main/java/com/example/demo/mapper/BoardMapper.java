@@ -144,4 +144,5 @@ public interface BoardMapper {
 
 	@Select("select id from Board where writer = #{writer}")
 	List<Integer> selectBoardIdByWriter(String writer);
+
 }
