@@ -37,6 +37,7 @@
 					</div>
 					<div class="mb-3">
 						<input class="btn btn-primary" type="submit" value="등록" />
+						<a class="btn btn-warning" href="/" >취소</a>
 					</div>
 				</form>
 			</div>

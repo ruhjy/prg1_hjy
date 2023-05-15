@@ -12,15 +12,33 @@ import org.springframework.web.servlet.mvc.support.*;
 import com.example.demo.domain.*;
 import com.example.demo.service.*;
 
-import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 
 @Controller
-@RequestMapping("member")
+@RequestMapping("/member")
 public class MemberController {
 
 	@Autowired
 	private MemberService service;
+
+	@ResponseBody
+	@GetMapping("/checkId/{id}")
+	public Map<String, Object> checkId(@PathVariable String id) {
+		return service.checkId(id);
+//		return Map.of("available", true);
+	}
+	
+	@ResponseBody
+	@GetMapping("/checkNickName/{nickName}")
+	public Map<String, Object> checkNickName(@PathVariable String nickName) {
+		return service.checkNickName(nickName);
+	}
+	
+	@ResponseBody
+	@GetMapping("/checkEmail/{email}")
+	public Map<String, Object> checkEmail(@PathVariable String email) {
+		return service.checkEmail(email);
+	}
 
 	@GetMapping("signup")
 	@PreAuthorize("isAnonymous()")
@@ -57,7 +75,7 @@ public class MemberController {
 
 	// 경로: /member/info?id=asdf
 	@GetMapping("info")
-	@PreAuthorize("isAuthenticated() and (authentication.name eq #id)")
+	@PreAuthorize("hasAuthority('admin') or isAuthenticated() and (authentication.name eq #id)")
 	public void info(String id, Model model) {
 
 		Member member = service.get(id);

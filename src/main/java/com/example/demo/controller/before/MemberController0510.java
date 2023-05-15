@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller.before;
 
 import java.util.*;
 
@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.*;
 
 import com.example.demo.domain.*;
 import com.example.demo.service.*;
+import com.example.demo.service.before.*;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;

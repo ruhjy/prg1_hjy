@@ -2,7 +2,11 @@ use Board;
 select * from Board;
 select * from Member;
 
-update Board set writer = 'update';
+desc Member;
+
+delete from Member where id = '1';
+
+-- update Board set writer = 'god';
 
 alter table Board add foreign key (writer) references Member(id);
 
@@ -20,3 +24,7 @@ insert into MemberAuthority values ('god', 'admin');
 insert into MemberAuthority values ('while', 'manager');
 
 select * from MemberAuthority;
+
+select * from Member m left join MemberAuthority ma on m.id = ma.memberId
+where m.id = 'god';
+
