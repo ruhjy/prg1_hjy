@@ -21,6 +21,7 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 
+	// 아이디 중복 체크
 	@ResponseBody
 	@GetMapping("/checkId/{id}")
 	public Map<String, Object> checkId(@PathVariable String id) {
@@ -28,12 +29,14 @@ public class MemberController {
 //		return Map.of("available", true);
 	}
 	
+	// 별명 중복 체크
 	@ResponseBody
 	@GetMapping("/checkNickName/{nickName}")
 	public Map<String, Object> checkNickName(@PathVariable String nickName) {
 		return service.checkNickName(nickName);
 	}
 	
+	// 이메일 중복 체크
 	@ResponseBody
 	@GetMapping("/checkEmail/{email}")
 	public Map<String, Object> checkEmail(@PathVariable String email) {
