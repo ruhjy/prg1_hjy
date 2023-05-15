@@ -20,3 +20,4 @@ $("#likeIcon").click(function() {
 		}
 	});
 });
+

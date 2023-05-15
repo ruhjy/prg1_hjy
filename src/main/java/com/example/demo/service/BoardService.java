@@ -48,7 +48,7 @@ public class BoardService {
 		Board board = mapper.selectById(id);
 		return board;
 	}
-
+	
 	public Map<String, Object> listBoard(
 			Integer page, String search, String type, Integer pageSize) {
 
@@ -205,10 +205,10 @@ public class BoardService {
 		like.setMemberId(authentication.getName());
 		Integer deleteCnt = likeMapper.delete(like);
 		if (deleteCnt != 1) {
-			Integer insertCnt = likeMapper.insert(like);
+			likeMapper.insert(like);
 			result.put("like", true);
 		}
-
+		
 		return result;
 	}
 

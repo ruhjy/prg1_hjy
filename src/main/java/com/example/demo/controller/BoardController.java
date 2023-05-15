@@ -9,6 +9,7 @@ import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.*;
+import org.springframework.web.servlet.*;
 import org.springframework.web.servlet.mvc.support.*;
 
 import com.example.demo.domain.*;
@@ -20,7 +21,7 @@ import lombok.extern.slf4j.*;
 @Controller
 @RequestMapping("/")
 public class BoardController {
-	
+
 	@Autowired
 	private BoardService service;
 
@@ -54,10 +55,9 @@ public class BoardController {
 		// 1. request param 수집/가공
 		// 2. business logic 처리
 		Board board = service.getBoard(id);
-		
+
 		// 3. add attribute
 		model.addAttribute("board", board);
-
 		// 4. forward / redirect
 		return "get";
 	}
@@ -86,7 +86,7 @@ public class BoardController {
 			@RequestParam(value = "files", required = false) MultipartFile[] addFiles,
 			@RequestParam(value = "removeFiles", required = false) List<String> removeFileNames,
 			@ModelAttribute Board board, RedirectAttributes redirectAttributes) {
-		
+
 		boolean ok = service.modify(board, addFiles, removeFileNames);
 
 		if (ok) {
@@ -162,7 +162,7 @@ public class BoardController {
 			return "redirect:/add";
 		}
 	}
-	
+
 	// 좋아요 기능
 	@ResponseBody
 	@PostMapping("/like")
