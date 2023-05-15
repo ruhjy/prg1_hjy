@@ -23,15 +23,21 @@
 					<!-- .mb-3*5>(label.form-label[for]+input.form-control[name]) -->
 					<div class="mb-3">
 						<label for="inputId" class="form-label">아이디</label>
-						<input id="inputId" type="text" class="form-control" name="id" value="${member.id }" />
-
+						<div class="input-group">
+							<input id="inputId" type="text" class="form-control" name="id" value="${member.id }" />
+							<button type="button" id="checkIdBtn" class="btn btn-outline-info">중복확인</button>
+						</div>
 						<!-- 아이디 중복 체크 -->
-						<div class="d-none" id="availableIdMessage">사용 가능한 아이디 입니다.</div>
-						<div class="d-none" id="notAvailableIdMessage">사용 불가능한 아이디 입니다.</div>
-
-						<button type="button" id="checkIdBtn">중복확인</button>
-
+						<div id="availableIdMessage" class="d-none form-text text-primary">
+							<i class="fa-solid fa-check"></i>
+							사용 가능한 아이디 입니다.
+						</div>
+						<div id="notAvailableIdMessage" class="d-none form-text text-danger">
+							<i class="fa-solid fa-triangle-exclamation"></i>
+							사용 불가능한 아이디 입니다.
+						</div>
 					</div>
+					
 					<div class="mb-3">
 						<label for="inputPassword" class="form-label">패스워드</label>
 						<input id="inputPassword" type="password" class="form-control" name="password" />
@@ -53,25 +59,38 @@
 
 					<div class="mb-3">
 						<label for="inputNickName" class="form-label">별명</label>
-						<input id="inputNickName" type="text" class="form-control" name="nickName" value="${member.nickName }" />
-
+						<div class="input-group">
+							<input id="inputNickName" type="text" class="form-control" name="nickName" value="${member.nickName }" />
+							<button type="button" id="checkNickNameBtn" class="btn btn-outline-info">중복확인</button>
+						</div>
 						<!-- 별명 중복체크 -->
-						<div class="d-none" id="availableNickNameMessage">사용 가능</div>
-						<div class="d-none" id="notAvailableNickNameMessage">사용 불가능</div>
-
-						<button type="button" id="checkNickNameBtn">중복확인</button>
+						<div id="availableNickNameMessage" class="d-none form-text text-primary">
+							<i class="fa-solid fa-check"></i>
+							사용 가능
+						</div>
+						<div id="notAvailableNickNameMessage" class="d-none form-text text-danger">
+							<i class="fa-solid fa-triangle-exclamation"></i>
+							사용 불가능
+						</div>
 					</div>
+					
 					<div class="mb-3">
 						<label for="inputEmail" class="form-label">이메일</label>
-						<input id="inputEmail" type="email" class="form-control" name="email" value="${member.email }" />
-
+						<div class="input-group">
+							<input id="inputEmail" type="email" class="form-control" name="email" value="${member.email }" />
+							<button type="button" id="checkEmailBtn" class="btn btn-outline-info">중복확인</button>
+						</div>
 						<!-- 이메일 중복체크 -->
-						<div class="d-none" id="availableEmailMessage">사용 가능</div>
-						<div class="d-none" id="notAvailableEmailMessage">사용 불가능</div>
-
-						<button type="button" id="checkEmailBtn">중복확인</button>
-
+						<div id="availableEmailMessage" class="d-none form-text text-primary">
+							<i class="fa-solid fa-check"></i>
+							사용 가능
+						</div>
+						<div id="notAvailableEmailMessage" class="d-none form-text text-danger">
+							<i class="fa-solid fa-triangle-exclamation"></i>
+							사용 불가능
+						</div>
 					</div>
+					
 					<div class="mb-3">
 						<input id="signupSubmit" type="submit" class="btn btn-primary" disabled value="가입" />
 					</div>
