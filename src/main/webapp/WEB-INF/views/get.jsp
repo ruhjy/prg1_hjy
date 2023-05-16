@@ -17,6 +17,16 @@
 
 	<my:alert />
 
+	<!-- toast -->
+	<div class="toast-container top-0 start-50 translate-middle-x p-3">
+		<div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header">
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body"></div>
+		</div>
+	</div>
+
 	<div class="container-lg">
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-8 col-lg-6">
@@ -24,6 +34,7 @@
 					<span id="boardIdText"> ${board.id } </span>
 					번 게시물
 				</h1>
+				<p>조회수 : ${board.hit }</p>
 
 				<!-- 좋아요 버튼 -->
 				<div>
@@ -31,9 +42,7 @@
 						<span id="likeIcon">
 							<i class="fa-regular fa-thumbs-up"></i>
 						</span>
-						<span id="likeNumber">
-							<%-- ${board.like } --%>
-						</span>
+						<span id="likeNumber"> ${board.likeCount } </span>
 					</h1>
 				</div>
 

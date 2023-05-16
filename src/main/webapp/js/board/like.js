@@ -1,3 +1,5 @@
+const toast = new bootstrap.Toast(document.querySelector("#liveToast"));
+
 // 좋아요 아이콘을 누르면
 $("#likeIcon").click(function() {
 	const boardId = $("#boardIdText").text().trim();
@@ -17,6 +19,13 @@ $("#likeIcon").click(function() {
 			} else {
 				$("#likeIcon").html(`<i class="fa-regular fa-thumbs-up"></i>`);
 			}
+		},
+		error: function(jqXHR) {
+			//console.log("좋아요 실패");
+			//console.log(jqXHR.responseJSON);
+			//$("body").prepend(jqXHR.responseJSON.message);
+			$(".toast-body").text(jqXHR.responseJSON.message);
+			toast.show();
 		}
 	});
 });

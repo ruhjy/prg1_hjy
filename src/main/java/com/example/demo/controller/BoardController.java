@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.*;
 import org.springframework.security.core.*;
 import org.springframework.stereotype.*;
@@ -166,8 +167,13 @@ public class BoardController {
 	// 좋아요 기능
 	@ResponseBody
 	@PostMapping("/like")
-	public Map<String, Object> like(@RequestBody Like like, Authentication authentication) {
-		return service.like(like, authentication);
+	public ResponseEntity<Map<String, Object>> like(@RequestBody Like like, Authentication authentication) {
+		
+		if (authentication == null) {
+			return ResponseEntity.status(403).body(Map.of("message", "로그인 후 사용 가능"));
+		} else {
+			return ResponseEntity.ok().body(service.like(like, authentication));
+		}
 	}
 
 }

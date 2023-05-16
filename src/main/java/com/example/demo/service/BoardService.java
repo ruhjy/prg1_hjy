@@ -200,10 +200,12 @@ public class BoardService {
 
 	public Map<String, Object> like(Like like, Authentication authentication) {
 		Map<String, Object> result = new HashMap<>();
+		
 		result.put("like", false);
 
 		like.setMemberId(authentication.getName());
 		Integer deleteCnt = likeMapper.delete(like);
+		
 		if (deleteCnt != 1) {
 			likeMapper.insert(like);
 			result.put("like", true);
