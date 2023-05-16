@@ -25,11 +25,6 @@ delete from Member where id = '';
 
 update Board set writer = 'while';
 
-SELECT *
-			FROM Member m 
-				LEFT JOIN MemberAuthority ma ON m.id = ma.memberId
-			WHERE 
-				id = 'qqq';
 
 
 
