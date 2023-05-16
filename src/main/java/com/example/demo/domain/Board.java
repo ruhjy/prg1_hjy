@@ -17,4 +17,5 @@ public class Board {
 	private List<String> fileName; // 파일 이미지를 보여주기 위해서 추가
 	private Integer fileCount; // 파일의 개수를 보여주기 위해서 추가
 	private Integer likeCount; // 좋아요 개수
+	private Boolean liked; // 좋아요 활성화(on/off)
 }

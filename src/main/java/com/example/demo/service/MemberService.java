@@ -11,18 +11,19 @@ import org.springframework.transaction.annotation.*;
 import com.example.demo.domain.*;
 import com.example.demo.mapper.*;
 
+import lombok.*;
 import lombok.extern.slf4j.*;
 
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
+@RequiredArgsConstructor
 public class MemberService {
 
-	@Autowired
-	private MemberMapper mapper;
+	private final MemberMapper mapper;
+	private final BoardLikeMapper likeMapper;
 
-	@Autowired
-	private BoardService boardService;
+	private final BoardService boardService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -54,11 +55,15 @@ public class MemberService {
 		if (passwordEncoder.matches(member.getPassword(), oldMember.getPassword())) {
 			// 암호가 같으면?
 
+			// 이 회원이 좋아요한 레코드 삭제
+			likeMapper.deleteByMemberId(member.getId());
+
 			// 이 회원이 작성한 게시물 row 삭제
 			boardService.removeByWriter(member.getId());
 
 			// 회원 테이블 삭제
 			cnt = mapper.deleteById(member.getId());
+
 		}
 
 		return cnt == 1;

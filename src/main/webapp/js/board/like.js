@@ -1,6 +1,6 @@
 const toast = new bootstrap.Toast(document.querySelector("#liveToast"));
 
-// 좋아요 아이콘을 누르면
+// 좋아요 아이콘을 누르면 
 $("#likeIcon").click(function() {
 	const boardId = $("#boardIdText").text().trim();
 	const data = { boardId: boardId };
@@ -17,8 +17,10 @@ $("#likeIcon").click(function() {
 				// on
 				$("#likeIcon").html(`<i class="fa-solid fa-thumbs-up"></i>`);
 			} else {
+				// off
 				$("#likeIcon").html(`<i class="fa-regular fa-thumbs-up"></i>`);
 			}
+			$("#likeNumber").text(data.count); // get.jsp에 있는 likeNumber 값 변경
 		},
 		error: function(jqXHR) {
 			//console.log("좋아요 실패");
