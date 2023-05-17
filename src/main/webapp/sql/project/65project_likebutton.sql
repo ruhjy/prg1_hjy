@@ -26,3 +26,9 @@ SELECT
 	(select count(*) from BoardLike where boardId = b.id) as countLike
 FROM Board b LEFT JOIN FileName f ON b.id = f.boardId
 where b.id = 2134;
+
+select b.id from Board b
+			left join BoardLike bl on b.id = bl.boardId
+            where b.writer = 'qqq';
+            
+select * from BoardLike;

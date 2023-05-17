@@ -21,9 +21,11 @@ alter table Board add column hit int after writer;
 select * from Member order by inserted desc;
 select id, password from Member where id = 'test2';
 
-delete from Member where id = '';
+delete from Board where writer = 'qqq';
 
 update Board set writer = 'while';
+
+select * from BoardLike;
 
 
 
