@@ -12,9 +12,7 @@ import com.example.demo.domain.*;
 import com.example.demo.mapper.*;
 
 import lombok.*;
-import lombok.extern.slf4j.*;
 
-@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
@@ -22,6 +20,7 @@ public class MemberService {
 
 	private final MemberMapper mapper;
 	private final BoardLikeMapper likeMapper;
+	private final CommentMapper commentMapper;
 
 	private final BoardService boardService;
 
@@ -57,6 +56,9 @@ public class MemberService {
 
 			// 이 회원이 좋아요한 레코드 삭제
 			likeMapper.deleteByMemberId(member.getId());
+			
+			// 이 회원이 작성한 댓글 row 삭제
+			commentMapper.deleteByMemberId(member.getId());
 
 			// 이 회원이 작성한 게시물 row 삭제
 			boardService.removeByWriter(member.getId());
