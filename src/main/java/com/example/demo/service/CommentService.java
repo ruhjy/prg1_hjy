@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import java.util.*;
-import java.util.stream.*;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.core.*;
@@ -18,25 +17,6 @@ public class CommentService {
 	@Autowired
 	private CommentMapper mapper;
 
-	public List<Comment> list(Integer boardId, Authentication authentication) {
-		List<Comment> comments = mapper.selectAllByBoardId(boardId);
-		
-		if (authentication != null) {
-			for (Comment comment : comments) {
-//			List<Comment> commentsWithEditable = comments.stream()
-//					.map(c -> {
-//						c.setEditable(c.getMemberId().equals(authentication.getName()));
-//						return c;
-//					}).toList();
-			
-				comment.setEditable(comment.getMemberId().equals(authentication.getName()));
-			}
-//			comments.forEach(c -> c.setEditable(c.getMemberId().equals(authentication.getName())));
-		}
-		
-		return comments;
-	}
-
 	public Map<String, Object> add(Comment comment, Authentication authentication) {
 		comment.setMemberId(authentication.getName());
 
@@ -52,18 +32,24 @@ public class CommentService {
 		return res;
 	}
 
-	public Map<String, Object> remove(Integer commentId) {
-		Map<String, Object> res = new HashMap<>();
+	public List<Comment> list(Integer boardId, Authentication authentication) {
+		List<Comment> comments = mapper.selectAllByBoardId(boardId);
 
-		int cnt = mapper.deleteById(commentId);
+		if (authentication != null) {
+//			List<Comment> commentsWithEditable = comments.stream()
+//					.map(c -> {
+//						c.setEditable(c.getMemberId().equals(authentication.getName()));
+//						return c;
+//					}).toList();
 
-		if (cnt == 1) {
-			res.put("message", "댓글이 삭제되었습니다.");
-		} else {
-			res.put("message", "댓글이 삭제되지 않았습니다.");
+//			comments.forEach(c -> c.setEditable(c.getMemberId().equals(authentication.getName())));
+
+			for (Comment comment : comments) {
+				comment.setEditable(comment.getMemberId().equals(authentication.getName()));
+			}
 		}
 
-		return res;
+		return comments;
 	}
 
 	public Comment get(Integer commentId) {
@@ -78,6 +64,20 @@ public class CommentService {
 			res.put("message", "댓글이 수정되었습니다.");
 		} else {
 			res.put("message", "댓글이 수정되지 않았습니다.");
+		}
+
+		return res;
+	}
+
+	public Map<String, Object> remove(Integer commentId) {
+		Map<String, Object> res = new HashMap<>();
+
+		int cnt = mapper.deleteById(commentId);
+
+		if (cnt == 1) {
+			res.put("message", "댓글이 삭제되었습니다.");
+		} else {
+			res.put("message", "댓글이 삭제되지 않았습니다.");
 		}
 
 		return res;

@@ -65,7 +65,13 @@
 									${board.fileCount }
 								</span>
 							</c:if>
-							(${board.commentCount })
+
+							<c:if test="${board.commentCount > 0 }">
+								<span class="badge rounded-pill text-bg-dark">
+									<i class="fa-regular fa-comment"></i>
+									${board.commentCount }
+								</span>
+							</c:if>
 						</td>
 						<td>${board.writer }</td>
 						<td>${board.hit }</td>

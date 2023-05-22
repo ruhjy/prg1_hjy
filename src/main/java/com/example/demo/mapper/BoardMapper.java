@@ -29,8 +29,7 @@ public interface BoardMapper {
 				b.writer,
 				b.hit,
 				f.fileName,
-				(select count(*) from BoardLike where boardId = b.id) as likeCount,
-				(select count(*) from Comment where boardId = b.id) as commentCount
+				(select count(*) from BoardLike where boardId = b.id) as likeCount
 			FROM Board b LEFT JOIN FileName f ON b.id = f.boardId
 			WHERE b.id = #{id}
 			""")

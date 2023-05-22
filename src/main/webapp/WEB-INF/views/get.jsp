@@ -13,9 +13,9 @@
 </head>
 <body>
 
-	<my:navBar />
+	<my:navBar></my:navBar>
 
-	<my:alert />
+	<my:alert></my:alert>
 
 	<!-- toast -->
 	<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
@@ -27,7 +27,10 @@
 		</div>
 	</div>
 
+
 	<div class="container-lg">
+
+		<!-- .row.justify-content-center>.col-12.col-md-8.col-lg-6 -->
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-8 col-lg-6">
 				<div class="d-flex">
@@ -36,89 +39,93 @@
 							<span id="boardIdText"> ${board.id } </span>
 							번 게시물
 						</h1>
-						<p>조회수 : ${board.hit }</p>
 					</div>
-					<!-- 좋아요 버튼 -->
+
 					<div>
 						<h1>
 							<span id="likeIcon">
-								<c:if test="${board.liked}">
-									<i class="fa-solid fa-thumbs-up"></i>
+								<c:if test="${board.liked }">
+									<i class="fa-solid fa-heart"></i>
 								</c:if>
 
 								<c:if test="${not board.liked }">
-									<i class="fa-regular fa-thumbs-up"></i>
+									<i class="fa-regular fa-heart"></i>
 								</c:if>
 							</span>
 							<span id="likeNumber"> ${board.likeCount } </span>
 						</h1>
 					</div>
 				</div>
-				<div class="mb-3">
-					<label for="" class="form-label">제목</label>
-					<input type="text" class="form-control" value="${board.title }" readonly />
-				</div>
 
-				<!-- 그림 파일 출력 -->
-				<div class="mb-3">
-					<c:forEach items="${board.fileName}" var="fileName">
-						<div class="mb-3">
-							<%-- http://localhost:8080/image/게시물번호/fileName --%>
-							<%-- <img class="img-thumbnail img-fluid" src="http://localhost:8080/image/${board.id }/${fileName}" alt="" /> --%>
-							<img class="img-thumbnail img-fluid" src="${bucketUrl }/${board.id }/${fileName}" alt="" />
-						</div>
-					</c:forEach>
-				</div>
+				<div>
+					<div class="mb-3">
+						<label for="" class="form-label">제목</label>
+						<input type="text" class="form-control" value="${board.title }" readonly />
+					</div>
 
-				<div class="mb-3">
-					<label for="" class="form-label">본문</label>
-					<textarea class="form-control" rows="10" readonly>${board.body }</textarea>
-				</div>
-				<div class="mb-3">
-					<label for="" class="form-label">작성자</label>
-					<input type="text" class="form-control" value="${board.writer }" readonly />
-				</div>
-				<div>
-					<label for="" class="form-label">작성일시</label>
-					<input type="text" class="form-control" value="${board.inserted }" readonly />
-				</div>
-				<div>
+					<!-- 그림 파일 출력 -->
+					<div class="mb-3">
+						<c:forEach items="${board.fileName }" var="fileName">
+							<div class="mb-3">
+								<img class="img-thumbnail img-fluid" src="${bucketUrl }/${board.id }/${fileName}" alt="" />
+							</div>
+						</c:forEach>
+					</div>
+
+
+					<div class="mb-3">
+						<label for="" class="form-label">본문</label>
+						<textarea class="form-control" readonly rows="10">${board.body }</textarea>
+					</div>
+					<div class="mb-3">
+						<label for="" class="form-label">작성자</label>
+						<input type="text" class="form-control" value="${board.writer }" readonly />
+					</div>
+					<div class="mb-3">
+						<label for="" class="form-label">작성일시</label>
+						<input type="text" readonly class="form-control" value="${board.inserted }" />
+					</div>
+
 					<sec:authorize access="isAuthenticated()">
 						<sec:authentication property="name" var="userId" />
-
 						<c:if test="${userId eq board.writer }">
-							<a class="btn btn-secondary" href="/modify/${board.id }">수정</a>
-							<button id="removeButton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">삭제</button>
-						</c:if>
-
-						<a class="btn btn-warning" href="/list">목록</a>
-					</sec:authorize>
-
-					<sec:authorize access="isAnonymous()">
-						<a class="btn btn-warning" href="/list">목록</a>
-					</sec:authorize>
-
-					<div id="commnetContatiner" class="mb-5">
-						<sec:authorize access="isAuthenticated()">
-							<div id="addCommentContainer">
-								<h6>입력</h6>
-								<textarea id="commentTextArea"></textarea>
-								<button id="sendCommentBtn">전송</button>
+							<div>
+								<a class="btn btn-secondary" href="/modify/${board.id }">수정</a>
+								<button id="removeButton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">삭제</button>
+								<a class="btn btn-success" href="/">목록</a>
 							</div>
-							<!-- 댓글 수정  -->
-							<div id="updateCommentContainer">
-								<h6>수정</h6>
-								<input type="hidden" id="commentUpdateIdInput" />
-								<textarea id="commentUpdateTextArea"></textarea>
-								<button id="updateCommentBtn">전송</button>
+						</c:if>
+					</sec:authorize>
+					
+					<sec:authorize access="isAnonymous()">
+						<a class="btn btn-success" href="/">목록</a>
+					</sec:authorize>
+					
+
+					<hr />
+
+					<div id="commentContainer">
+						<h1>
+							<i class="fa-solid fa-comments"></i>
+						</h1>
+						<sec:authorize access="isAuthenticated()">
+							<div class="mb-3" id="addCommentContainer">
+								<div class="input-group">
+									<div class="form-floating">
+										<textarea style="height: 97px" placeholder="댓글을 남겨주세요" class="form-control" id="commentTextArea"></textarea>
+										<label for="floatingTextarea">댓글을 남겨주세요</label>
+									</div>
+									<button class="btn btn-outline-primary" id="sendCommentBtn">
+										<i class="fa-regular fa-paper-plane"></i>
+									</button>
+								</div>
 							</div>
 						</sec:authorize>
 
-						<ul class="list-group" id=commentListContainer>
-							
+						<ul class="list-group" id="commentListContainer">
+
 						</ul>
 					</div>
-
 				</div>
 			</div>
 		</div>
@@ -134,7 +141,7 @@
 				</form>
 			</div>
 
-			<!-- 게시물 삭제 Modal -->
+			<!-- Modal -->
 			<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -150,8 +157,48 @@
 					</div>
 				</div>
 			</div>
-
 		</c:if>
+
+		<!-- 댓글 삭제 Modal -->
+		<div class="modal fade" id="deleteCommentConfirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5">댓글 삭제 확인</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">삭제 하시겠습니까?</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+						<button id="deleteCommentModalButton" data-bs-dismiss="modal" type="submit" class="btn btn-danger">삭제</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<%-- 댓글 수정 모달 --%>
+		<div class="modal fade" id="commentUpdateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5">댓글 수정</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="updateCommentContainer">
+							<input type="hidden" id="commentUpdateIdInput" />
+							<textarea class="form-control" id="commentUpdateTextArea"></textarea>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" id="updateCommentBtn" data-bs-dismiss="modal">수정</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
 	</sec:authorize>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
@@ -161,3 +208,11 @@
 	<script src="/js/board/comment.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
