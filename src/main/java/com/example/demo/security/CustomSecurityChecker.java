@@ -14,11 +14,18 @@ import lombok.extern.slf4j.*;
 @RequiredArgsConstructor
 public class CustomSecurityChecker {
 
-	private final BoardMapper mapper;
+	private final BoardMapper boardMapper;
+	private final CommentMapper commentMapper;
+	
+	public boolean checkCommentWriter(Authentication authentication, Integer commentId) {
+		Comment comment = commentMapper.selectById(commentId);
+		
+		return comment.getMemberId().equals(authentication.getName()); 
+	}
 	
 	public boolean checkBoardWriter(Authentication authentication, Integer boardId) {
 		log.info("checkBoardWriter 호출");
-		Board board = mapper.selectById(boardId);
+		Board board = boardMapper.selectById(boardId);
 		
 		String username = authentication.getName();
 		String writer = board.getWriter();

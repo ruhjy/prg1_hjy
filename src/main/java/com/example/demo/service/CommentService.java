@@ -22,18 +22,19 @@ public class CommentService {
 		List<Comment> comments = mapper.selectAllByBoardId(boardId);
 		
 		if (authentication != null) {
+			for (Comment comment : comments) {
 //			List<Comment> commentsWithEditable = comments.stream()
 //					.map(c -> {
 //						c.setEditable(c.getMemberId().equals(authentication.getName()));
 //						return c;
 //					}).toList();
-			for (Comment comment : comments) {
+			
 				comment.setEditable(comment.getMemberId().equals(authentication.getName()));
 			}
+//			comments.forEach(c -> c.setEditable(c.getMemberId().equals(authentication.getName())));
 		}
 		
 		return comments;
-		
 	}
 
 	public Map<String, Object> add(Comment comment, Authentication authentication) {

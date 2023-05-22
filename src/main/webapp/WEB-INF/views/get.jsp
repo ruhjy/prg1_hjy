@@ -54,7 +54,6 @@
 						</h1>
 					</div>
 				</div>
-
 				<div class="mb-3">
 					<label for="" class="form-label">제목</label>
 					<input type="text" class="form-control" value="${board.title }" readonly />
@@ -106,16 +105,18 @@
 								<textarea id="commentTextArea"></textarea>
 								<button id="sendCommentBtn">전송</button>
 							</div>
+							<!-- 댓글 수정  -->
+							<div id="updateCommentContainer">
+								<h6>수정</h6>
+								<input type="hidden" id="commentUpdateIdInput" />
+								<textarea id="commentUpdateTextArea"></textarea>
+								<button id="updateCommentBtn">전송</button>
+							</div>
 						</sec:authorize>
-						<!-- 댓글 수정  -->
-						<div id="updateCommentContainer">
-							<h6>수정</h6>
-							<input type="hidden" id="commentUpdateIdInput" />
-							<textarea id="commentUpdateTextArea"></textarea>
-							<button id="updateCommentBtn">전송</button>
-						</div>
 
-						<div id=commentListContainer></div>
+						<ul class="list-group" id=commentListContainer>
+							
+						</ul>
 					</div>
 
 				</div>
