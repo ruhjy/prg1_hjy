@@ -65,6 +65,7 @@
 									${board.fileCount }
 								</span>
 							</c:if>
+							(${board.commentCount })
 						</td>
 						<td>${board.writer }</td>
 						<td>${board.hit }</td>

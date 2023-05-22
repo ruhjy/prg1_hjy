@@ -12,6 +12,7 @@
 		<result column="hit" property="hit" />
 		<result column="inserted" property="inserted" />
 		<result column="likeCount" property="likeCount" />
+		<result column="commentCount" property="commentCount" />
 		<collection property="fileName" ofType="string">
 			<result column="fileName" />
 		</collection>

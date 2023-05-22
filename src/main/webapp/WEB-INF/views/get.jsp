@@ -18,7 +18,7 @@
 	<my:alert />
 
 	<!-- toast -->
-	<div class="toast-container top-0 start-50 translate-middle-x p-3">
+	<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
 		<div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
 			<div class="d-flex">
 				<div class="toast-body"></div>
@@ -98,6 +98,26 @@
 					<sec:authorize access="isAnonymous()">
 						<a class="btn btn-warning" href="/list">목록</a>
 					</sec:authorize>
+
+					<div id="commnetContatiner" class="mb-5">
+						<sec:authorize access="isAuthenticated()">
+							<div id="addCommentContainer">
+								<h6>입력</h6>
+								<textarea id="commentTextArea"></textarea>
+								<button id="sendCommentBtn">전송</button>
+							</div>
+						</sec:authorize>
+						<!-- 댓글 수정  -->
+						<div id="updateCommentContainer">
+							<h6>수정</h6>
+							<input type="hidden" id="commentUpdateIdInput" />
+							<textarea id="commentUpdateTextArea"></textarea>
+							<button id="updateCommentBtn">전송</button>
+						</div>
+
+						<div id=commentListContainer></div>
+					</div>
+
 				</div>
 			</div>
 		</div>
@@ -137,5 +157,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<script src="/js/board/like.js"></script>
+	<script src="/js/board/comment.js"></script>
 </body>
 </html>
