@@ -54,11 +54,11 @@ public class MemberService {
 		if (passwordEncoder.matches(member.getPassword(), oldMember.getPassword())) {
 			// 암호가 같으면?
 
-			// 이 회원이 좋아요한 레코드 삭제
-			likeMapper.deleteByMemberId(member.getId());
-			
 			// 이 회원이 작성한 댓글 row 삭제
 			commentMapper.deleteByMemberId(member.getId());
+
+			// 이 회원이 좋아요한 레코드 삭제
+			likeMapper.deleteByMemberId(member.getId());
 
 			// 이 회원이 작성한 게시물 row 삭제
 			boardService.removeByWriter(member.getId());

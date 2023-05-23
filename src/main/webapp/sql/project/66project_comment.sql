@@ -1,6 +1,7 @@
 use Board;
 
-desc Comment;
+select * from Member;
+
 select * from Comment;
 create table Comment(
 	id int primary key auto_increment,
@@ -13,8 +14,6 @@ create table Comment(
 );
 
 select * from Member;
-
-select count(*) from Comment where boardId = 2144;
 
 insert into Comment (boardId, memberId, content) values (2144, 'god', 'ㅎ2');
 insert into Comment (boardId, memberId, content) values (2144, 'god', 'ㅎ22');

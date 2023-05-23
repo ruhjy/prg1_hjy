@@ -30,12 +30,14 @@ public class BoardService {
 	private final S3Client s3;
 	private final BoardMapper mapper;
 	private final BoardLikeMapper likeMapper;
+	private final CommentMapper commentMapper;
 
 	@Autowired // 생성자 하나일 경우 생략 가능
-	public BoardService(S3Client s3, BoardMapper mapper, BoardLikeMapper likeMapper) {
+	public BoardService(S3Client s3, BoardMapper mapper, BoardLikeMapper likeMapper, CommentMapper commentMapper) {
 		this.s3 = s3;
 		this.mapper = mapper;
 		this.likeMapper = likeMapper;
+		this.commentMapper = commentMapper;
 	}
 
 	public List<Board> listBoard() {
@@ -174,6 +176,9 @@ public class BoardService {
 	}
 
 	public boolean remove(Integer id) {
+		
+		// 댓글 테이블 지우기
+		commentMapper.deleteByBoardId(id);
 
 		// 좋아요 테이블 지우기
 		likeMapper.deleteByBoardId(id);

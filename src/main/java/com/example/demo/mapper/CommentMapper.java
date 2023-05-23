@@ -36,8 +36,14 @@ public interface CommentMapper {
 
 	@Delete("delete from Comment where id = #{commentId}")
 	Integer deleteById(Integer commentId);
-	
+
 	@Delete("delete from Comment where memberId = #{memberId}")
-	void deleteByMemberId(String memberId);
+	Integer deleteByMemberId(String memberId);
+
+	@Delete("""
+			delete from Comment
+			where boardId = #{boardId}
+			""")
+	Integer deleteByBoardId(Integer boardId);
 
 }
