@@ -1,4 +1,9 @@
 use Board;
+select * from Board;
+select * from FileName;
+
+desc FileName;
+desc Board;
 
 select * from Member;
 
